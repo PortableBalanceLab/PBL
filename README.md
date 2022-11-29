@@ -38,23 +38,31 @@ Once you are satisfied that you can load a Jupyter notebook, you can then go thr
 
 ## Course Materials
 
-It is recommended that you go through all of the lecture material (prefixed: `L`).
+### `L`: Lectures
 
-| ID | Name | Link |
+It is recommended that you go through all of the lecture material (`L0`-`L3`). These ensure you know enough Python to get through the practical material (`S0`-`S4`).
+
+| ID | Link |
+| -- | ---- |
+| L0 | Python: Basics |
+| L1 | Python: functions, classes, and writing files |
+| L2 | Python: GUIs and Hardware Interfacing |
+
+### `S`: Sensor Practicals
+
+You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
+
+| ID | Link | Note |
 | -- | ---- | ---- |
-| L1 | Set up the Raspberry Pi | [PBL start-up session](PBL start-up session) |
-| L2 | Python: Basics | Link TODO |
-| L3 | Python: functions, classes, and writing files | Link TODO |
-| L4 | Python: GUIs and Hardware Interfacing | Link TODO |
+| S0 | Set up the Raspberry Pi | **All lab practicals (`S1`-`S4`) require doing this first** |
+| S1 | Camera | |
+| S2 | IMU | |
+| S3 | Force Plate | |
+| S4 | EMG | |
 
-You will be asigned one of four possible lab practicals (prefixed: `P`). You only need to study the material that you have been assigned.
+### `E`: Extras
 
-| ID | Name | Link |
-| -- | ---- | ---- |
-| P1 | Camera | Link TODO |
-| P2 | IMU | Link TODO |
-| P3 | Force Plate | Link TODO |
-| P4 | EMG | Link TODO |
+TODO: these are how we will code things like extra python examples, standalone FAQ Jupyter notebooks, etc.
 
 
 ## F&Q
