@@ -2,7 +2,7 @@
 
 > Portable Balance Lab course material for students
 
-The Portable Balance Lab (PBL) is a practical course that teaches students how to integrate hardware and software in order to create their own balance lab. This repository contains all of the student-facing PBL course material.
+The Portable Balance Lab (PBL) is a practical course that teaches people how to create their own balance lab by integrating sensors with software. This repository contains all of the learner-facing course material.
 
 
 ## Getting Started
@@ -21,7 +21,7 @@ In this course, we will work with Python. To get used to this, all lectures are 
     3. Boot Jupyter through the navigator UI
     4. This should open Jupyter a browser window. Jupyter notebooks (`.ipynb` files) can be opened through this UI.
 
-- **Try Opening a PBL Lecture**:
+- **Open a PBL Lecture**:
 
     1. In the Jupyter UI, browse to wherever you unzipped this repository:
 
@@ -33,24 +33,32 @@ In this course, we will work with Python. To get used to this, all lectures are 
 
          * e.g. click `PBL start-up session (students) (21-22)` then `PBL_Lab0_Manual_2022.ipynb`
 
-Once you are satisfied that everything is working, you can then go through the course materials.
+Once you are satisfied that you can load a Jupyter notebook, you can then go through the course materials.
 
 
 ## Course Materials
 
-It is recommended that 
+It is recommended that you go through all of the lecture material (prefixed: `L`).
 
-In this course we will work with Python. To this end, all lectures are delivered using Jupyter notebooks.
+| ID | Name | Link |
+| -- | ---- | ---- |
+| L1 | Set up the Raspberry Pi | [PBL start-up session](PBL start-up session) |
+| L2 | Python: Basics | Link TODO |
+| L3 | Python: functions, classes, and writing files | Link TODO |
+| L4 | Python: GUIs and Hardware Interfacing | Link TODO |
 
-All course material is delivered through Jupyter notebooks. 
+You will be asigned one of four possible lab practicals (prefixed: `P`). You only need to study the material that you have been assigned.
 
-## Table of Contents
-
-It is recommended that all students first master the basic 
-
-| Topic | Link | Comment |
-| Python Basics |
-
-## Getting Started
+| ID | Name | Link |
+| -- | ---- | ---- |
+| P1 | Camera | Link TODO |
+| P2 | IMU | Link TODO |
+| P3 | Force Plate | Link TODO |
+| P4 | EMG | Link TODO |
 
 
+## F&Q
+
+### Where is the Schedule?
+
+This repository only contains core course materials. Schedules should be made available by your teachers via their teaching platform of choice (e.g. in TU Delft, Brightspace).
