@@ -44,21 +44,21 @@ It is recommended that you go through all of the lecture material (`L0`-`L3`). T
 
 | ID | Link |
 | -- | ---- |
-| L0 | Python: Basics |
-| L1 | Python: functions, classes, and writing files |
-| L2 | Python: GUIs and Hardware Interfacing |
+| L1 | Python: Basics |
+| L2 | Python: functions, classes, and writing files |
+| L3 | Python: GUIs and Hardware Interfacing |
 
 ### `S`: Sensor Practicals
 
-You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
+You will be asigned one of four possible lab practicals (`S2`-`S5`). All lab practicals require setting up the Raspberry Pi (`S1`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S2`-`S5`).
 
 | ID | Link | Note |
 | -- | ---- | ---- |
-| S0 | Set up the Raspberry Pi | **All lab practicals (`S1`-`S4`) require doing this first** |
-| S1 | Camera | |
-| S2 | IMU | |
-| S3 | Force Plate | |
-| S4 | EMG | |
+| S1 | Set up the Raspberry Pi | **All lab practicals (`S2`-`S5`) require doing this first** |
+| S2 | Camera | |
+| S3 | IMU | |
+| S4 | Force Plate | |
+| S5 | EMG | |
 
 ### `E`: Extras
 
