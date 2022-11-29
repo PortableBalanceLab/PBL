@@ -38,9 +38,9 @@ Once you are satisfied that you can load a Jupyter notebook, you can then go thr
 
 ## Course Materials
 
-### `L`: Lectures
+### `L`ectures
 
-It is recommended that you go through all of the lecture material (`L0`-`L3`). These ensure you know enough Python to get through the practical material (`S0`-`S4`).
+It is recommended that you go through all of the lecture material (`L1`-`L3`). These ensure you know enough Python to get through the practical material (`S1`-`S5`).
 
 | ID | Link |
 | -- | ---- |
@@ -48,7 +48,7 @@ It is recommended that you go through all of the lecture material (`L0`-`L3`). T
 | L2 | Python: functions, classes, and writing files |
 | L3 | Python: GUIs and Hardware Interfacing |
 
-### `S`: Sensor Practicals
+### `S`ensor Practicals
 
 You will be asigned one of four possible lab practicals (`S2`-`S5`). All lab practicals require setting up the Raspberry Pi (`S1`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S2`-`S5`).
 
@@ -60,7 +60,7 @@ You will be asigned one of four possible lab practicals (`S2`-`S5`). All lab pra
 | S4 | Force Plate | |
 | S5 | EMG | |
 
-### `E`: Extras
+### `E`xtras
 
 TODO: these are how we will code things like extra python examples, standalone FAQ Jupyter notebooks, etc.
 
