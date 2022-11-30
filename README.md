@@ -53,11 +53,11 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 
 > **⚠️ Warning ⚠️**: You should open the lecture's Jupyter notebooks (`.ipynb` files) in your own local copy of this repository (see: [Getting Started](#getting-started)). The preview links here don't let you *run* the example code.
 
-| ID | Link |
-| -- | ---- |
-| L1 | [Python: Basics](L1_PythonBasics/L1_PythonBasics.ipynb) |
-| L2 | [Python: functions, classes, and writing files](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
-| L3 | [Python: GUIs and Hardware Interfacing](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
+| ID | Title | Location |
+| -- | ----- | -------- |
+| L1 | Python: Basics | [L1_PythonBasics/L1_PythonBasics.ipynb](L1_PythonBasics/L1_PythonBasics.ipynb) |
+| L2 | Python: Functions, Classes, and Writing Files | [L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
+| L3 | Python: GUIs and Hardware | [L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
 
 ### `S`: Sensor Practicals
 
