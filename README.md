@@ -5,13 +5,13 @@
 The Portable Balance Lab (PBL) is a practical course that teaches people how to create their own balance lab by integrating sensors with software. This repository contains all of the learner-facing course material.
 
 
-## Getting Started
+## 🚀 Getting Started
 
 In this course, we will work with Python. To get used to this, all lectures are delivered through Jupyter notebooks. This way, you can view, modify, and run all code samples in the Jupyter viewer (i.e. just like Matlab Livescripts).
 
 - **Download a Copy of this Repository**:
 
-    1. [Download link](archive/main.zip)
+    1. [Download link](https://github.com/PortableBalanceLab/PBLstaging/archive/adam_rearrangement.zip): TODO put into `releases`
     2. Unzip it somewhere - all course materials are inside it
 
 - **Get Jupyter**:
@@ -36,31 +36,38 @@ In this course, we will work with Python. To get used to this, all lectures are 
 Once you are satisfied that you can load a Jupyter notebook, you can then go through the course materials.
 
 
-## Course Materials
+## 👩‍🏫 Course Materials
 
-### `L`ectures
+The course material is split into lectures (`L`), sensor practicals (`S`), and extra content (`X`):
+
+- You should go through all lectures (`L1`, `L2`, and `L3`)
+- You will be assigned one of four possible practicals (`S1`, `S2`, `S3`, or `S4`)
+- All practicals require setting up a Raspberry Pi (`S0`)
+- Extra content (`X`) may contain helpful hints, such as code examples
+
+### `L`: Lectures
 
 It is recommended that you go through all of the lecture material (`L1`-`L3`). These ensure you know enough Python to get through the practical material (`S1`-`S5`).
 
 | ID | Link |
 | -- | ---- |
-| L1 | Python: Basics |
-| L2 | Python: functions, classes, and writing files |
-| L3 | Python: GUIs and Hardware Interfacing |
+| L1 | [Python: Basics](L1_PythonBasics/L1_PythonBasics.ipynb) |
+| L2 | [Python: functions, classes, and writing files](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
+| L3 | [Python: GUIs and Hardware Interfacing](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
 
-### `S`ensor Practicals
+### `S`: Sensor Practicals
 
-You will be asigned one of four possible lab practicals (`S2`-`S5`). All lab practicals require setting up the Raspberry Pi (`S1`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S2`-`S5`).
+You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
 
 | ID | Link | Note |
 | -- | ---- | ---- |
-| S1 | Set up the Raspberry Pi | **All lab practicals (`S2`-`S5`) require doing this first** |
-| S2 | Camera | |
-| S3 | IMU | |
-| S4 | Force Plate | |
-| S5 | EMG | |
+| S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S2`-`S5`) require doing this first** |
+| S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
+| S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
+| S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
+| S4 | [EMG](S4_EMG/S4_EMG.ipynb) | |
 
-### `E`xtras
+### `X`: eXtra Content
 
 TODO: these are how we will code things like extra python examples, standalone FAQ Jupyter notebooks, etc.
 
