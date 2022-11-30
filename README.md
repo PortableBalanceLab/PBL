@@ -5,7 +5,7 @@
 The Portable Balance Lab (PBL) is a practical course that teaches people how to create their own balance lab from raw components and software. This repository contains all of the learner-facing course material.
 
 
-## <a name="getting-started"></a> 🚀 Getting Started
+# <a name="getting-started"></a> 🚀 Getting Started
 
 In this course, we will work with Python. To get used to this, all lectures are delivered through Jupyter notebooks. This way, you can view, modify, and run all code samples in the Jupyter viewer (i.e. just like Matlab Livescripts).
 
@@ -38,7 +38,7 @@ To get started, follow these steps:
 Once you are satisfied that you can load a Jupyter notebook, you can then go through the course materials.
 
 
-## 👩‍🏫 Course Materials
+# 👩‍🏫 Course Materials
 
 The course material is split into lectures (`L`), sensor practicals (`S`), and extra content (`X`):
 
@@ -47,7 +47,7 @@ The course material is split into lectures (`L`), sensor practicals (`S`), and e
 - All practicals require setting up a Raspberry Pi (`S0`)
 - Extra content (`X`) may contain helpful hints, such as code examples
 
-### `L`: Lectures
+## `L`: Lectures
 
 It is recommended that you go through all of the lecture material (`L1`-`L3`). These ensure you know enough Python to get through the practical material (`S1`-`S5`).
 
@@ -59,7 +59,7 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 | L2 | [Python: functions, classes, and writing files](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
 | L3 | [Python: GUIs and Hardware Interfacing](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
 
-### `S`: Sensor Practicals
+## `S`: Sensor Practicals
 
 You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
 
@@ -71,12 +71,12 @@ You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab pra
 | S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
 | S4 | [EMG](S4_EMG/S4_EMG.ipynb) | |
 
-### `X`: eXtra Content
+## `X`: eXtra Content
 
 TODO: these are how we will code things like extra python examples, standalone FAQ Jupyter notebooks, etc.
 
 
-## F&Q
+# F&Q
 
 ### Where is the Schedule?
 
