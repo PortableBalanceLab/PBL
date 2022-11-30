@@ -5,7 +5,7 @@
 The Portable Balance Lab (PBL) is a practical course that teaches people how to create their own balance lab by integrating sensors with software. This repository contains all of the learner-facing course material.
 
 
-## 🚀 Getting Started
+## <a name="getting-started"></a 🚀 Getting Started
 
 In this course, we will work with Python. To get used to this, all lectures are delivered through Jupyter notebooks. This way, you can view, modify, and run all code samples in the Jupyter viewer (i.e. just like Matlab Livescripts).
 
@@ -50,6 +50,8 @@ The course material is split into lectures (`L`), sensor practicals (`S`), and e
 ### `L`: Lectures
 
 It is recommended that you go through all of the lecture material (`L1`-`L3`). These ensure you know enough Python to get through the practical material (`S1`-`S5`).
+
+> **⚠️ Warning ⚠️**: You should open the lecture's Jupyter notebooks (`.ipynb` files) in your own local copy of this repository (see: [Getting Started](#getting-started)). The preview links here don't let you *run* the example code.
 
 | ID | Link |
 | -- | ---- |
