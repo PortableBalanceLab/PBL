@@ -63,8 +63,8 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 
 You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
 
-| ID | Link | Notes |
-| -- | ---- | ----- |
+| ID | Title | Notes |
+| -- | ----- | ----- |
 | S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S2`-`S5`) require doing this first** |
 | S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
 | S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
