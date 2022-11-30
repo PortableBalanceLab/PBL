@@ -53,8 +53,8 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 
 > **⚠️ Warning ⚠️**: You should open the lecture's Jupyter notebooks (`.ipynb` files) in your own local copy of this repository (see: [Getting Started](#getting-started)). The preview links here don't let you *run* the example code.
 
-| ID | Title | Location |
-| -- | ----- | -------- |
+| ID | Title |
+| -- | ----- |
 | L1 | [Python: Basics](L1_PythonBasics/L1_PythonBasics.ipynb) |
 | L2 | [Python: functions, classes, and writing files](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
 | L3 | [Python: GUIs and Hardware Interfacing](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
@@ -63,8 +63,8 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 
 You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab practicals require setting up the Raspberry Pi (`S0`). After setting up the Raspberry Pi, you only need to use the materials related to the practical you have been assigned (`S1`-`S4`).
 
-| ID | Link | Note |
-| -- | ---- | ---- |
+| ID | Link | Notes |
+| -- | ---- | ----- |
 | S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S2`-`S5`) require doing this first** |
 | S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
 | S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
