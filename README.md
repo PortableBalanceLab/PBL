@@ -47,6 +47,7 @@ The course material is split into lectures (`L`), sensor practicals (`S`), and e
 - All practicals require setting up a Raspberry Pi (`S0`)
 - Extra content (`X`) may contain helpful hints, such as code examples
 
+
 ## `L`: Lectures
 
 It is recommended that you go through all of the lecture material (`L1`-`L3`). These ensure you know enough Python to get through the practical material (`S1`-`S5`).
@@ -58,6 +59,7 @@ It is recommended that you go through all of the lecture material (`L1`-`L3`). T
 | L1 | [Python: Basics](L1_PythonBasics/L1_PythonBasics.ipynb) |
 | L2 | [Python: functions, classes, and writing files](L2_PythonClassesAndWritingFiles/L2_PythonClassesAndWritingFiles.ipynb) |
 | L3 | [Python: GUIs and Hardware Interfacing](L3_PythonGUIsAndHardware/L3_PythonGUIsAndHardware.ipynb) |
+
 
 ## `S`: Sensor Practicals
 
@@ -71,9 +73,15 @@ You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab pra
 | S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
 | S4 | [EMG](S4_EMG/S4_EMG.ipynb) | |
 
+
 ## `X`: eXtra Content
 
-TODO: these are how we will code things like extra python examples, standalone FAQ Jupyter notebooks, etc.
+These materials are extra notes/examples that parts of the course may refer to.
+
+| ID | Title | Notes |
+| -- | ----- | ----- |
+| X1 | [Writing CSV Files](X1_WritingCSVFiles/X1_WritingCSVFiles.ipynb) | Explains how to write CSV data to a file |
+| X2 | [Generating Timestamped Filenames](X2_GeneratingTimestampedFilenames/X2_GeneratingTimestampedFilenames.ipynb) | Explains how to generate timestamped filenames |
 
 
 # F&Q
