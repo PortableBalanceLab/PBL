@@ -41,8 +41,8 @@ Once you are satisfied that you can load a Jupyter notebook, you can then go thr
 
 The course material is split into lectures (`L`), sensor practicals (`S`), and extra content (`X`):
 
-- You should go through all lectures (`L1`, `L2`, and `L3`)
-- You will be assigned one of four possible practicals (`S1`, `S2`, `S3`, or `S4`)
+- You should go through all lectures (`L1`, `L2`, **and** `L3`)
+- You will be assigned one of four possible practicals (`S1`, `S2`, `S3`, **or** `S4`)
 - All practicals require setting up a Raspberry Pi (`S0`)
 - Some practicals may ask you to go through extra content (`X`)
 
