@@ -44,7 +44,7 @@ The course material is split into lectures (`L`), sensor practicals (`S`), and e
 - You should go through all lectures (`L1`, `L2`, and `L3`)
 - You will be assigned one of four possible practicals (`S1`, `S2`, `S3`, or `S4`)
 - All practicals require setting up a Raspberry Pi (`S0`)
-- Extra content (`X`) may contain helpful hints, such as code examples
+- Some practicals may ask you to go through extra content (`X`)
 
 
 ## `L`: Lectures
