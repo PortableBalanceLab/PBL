@@ -13,8 +13,7 @@ To get started, follow these steps:
 
 1. **Download a Copy of this Repository**:
 
-    1. [Download link](https://github.com/PortableBalanceLab/PBLstaging/archive/adam_rearrangement.zip): TODO put into `releases`
-    2. Unzip it somewhere - all course materials are inside it
+    1. `git clone https://github.com/PortableBalanceLab/PBLstaging` (TODO: this should eventually become a download to a ZIP containing a particular version of the lab notes)
 
 2. **Get Jupyter**:
 
