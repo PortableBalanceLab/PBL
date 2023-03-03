@@ -26,6 +26,7 @@ This information is filled out while setting up the Pi.
 # Physically ID the Pi
 
 - Use a permanant marker to physically write an ID on the Pi somewhere (e.g. it can just be a number).
+- Write the same ID on the SD card
 - **Add the `ID` to the spreadsheet**. The ID is useful to have in case Pis are mixed up, or for cross-checking with
   other information.
 
