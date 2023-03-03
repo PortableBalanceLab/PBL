@@ -79,6 +79,7 @@ These materials are extra notes/examples that parts of the course may refer to.
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
+| X0 | [Software Setup](X2_InstallSoftware/README.md) | Explains how the software used in the PBL course is setup |
 | X1 | [Writing CSV Files](X1_WritingCSVFiles/X1_WritingCSVFiles.ipynb) | Explains how to write CSV data to a file |
 | X2 | [Generating Timestamped Filenames](X2_GeneratingTimestampedFilenames/X2_GeneratingTimestampedFilenames.ipynb) | Explains how to generate timestamped filenames |
 
