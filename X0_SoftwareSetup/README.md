@@ -114,6 +114,8 @@ of the Pi using SSH.
   - You can copy things to the Pi by running this command on your laptop (**not** in the SSH session): `scp InstallPBLSoftware.sh username@address:`
   - You can also use something like a private gist, or pre-copy the script onto the microSD and
     use it from `/boot`, etc.
+  - **Note**: if you are copying the script from Windows, then the script may contain `\r\n` line-ending, which are invalid. You can
+    remove them with `sed -i 's/\r//' InstallPBLSoftware.sh`
 
 - via SSH, get the Pi's MAC address:
 
