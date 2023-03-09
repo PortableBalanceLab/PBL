@@ -1,4 +1,4 @@
-# PBL
+# Portable Balance Lab (PBL)
 
 > Portable Balance Lab course material for students
 
