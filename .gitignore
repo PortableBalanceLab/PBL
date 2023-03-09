@@ -1,0 +1,6 @@
+.ipynb_checkpoints
+
+# compiled python files
+__pycache__/
+*.py[cod]
+*$py.class
