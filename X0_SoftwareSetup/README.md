@@ -31,7 +31,7 @@ This information is filled out while setting up the Pi.
   other information.
 
 
-# Setup WiFi
+# Setup WiFi (Hotspot)
 
 In order to avoid having to physically wire up each Raspberry Pi to power, a monitor, a keyboard, and
 a mouse, this guide instead opts for configuring the Raspberry Pi such that it already uses a known
@@ -87,6 +87,14 @@ correct WiFi credentials, hostname, SSH, username, and password).
   - Set keyboard layout to `us`
 
 - Write the configured OS to the microSD card
+- Eject the card so that it's ready to be inserted into the Raspberry Pi
+
+
+# Boot up the Raspberry Pi
+
+Once the MicroSD card has been flashed with the "base" Raspberry Pi OS, it must be booted up so
+that further configuration steps can be performed via SSH.
+
 - Eject the micro SD card, plug it into the pi, power up the pi
 - The pi should automatically connect to your WiFi network. Your hotspot/router software should
   identify that the Pi has connected.
@@ -98,40 +106,51 @@ correct WiFi credentials, hostname, SSH, username, and password).
 
 # Configure the Pi via SSH
 
-With the Pi OS setup and logged into a network, you can now remotely configure the userspace side
-of the Pi using SSH.
+With the "base" Raspberry Pi OS installed, and with it logged onto a (probably, hotspot) network, you
+can now use SSH to configure the Raspberry Pi with PBL-specific software and configuration options (e.g.
+enable VNC and i2c).
 
-- Connect to the Pi via SSH:
+- Use `scp` to copy this directory (`X0_SoftwareSetup`) onto the Pi:
 
-  - Use a terminal (e.g. Windows Powershell, Mac Terminal) to connect
-  - Command: `ssh username@address`
-  - `address` can be the IP address, `hostname`, or `hostname.local`, depending on how the network
-    is configured
+  - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
+  - Copy this directory to the Pi with: `scp -r X0_SoftwareSetup username@address:`
+  - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
+  - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
+  - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
+    `hostname.local` - depending on how you configured your network.
+  - **Note 3**: the colon (`:`) at the end of `username@address:` is important
 
-- Copy `InstallPBLSoftware.sh` onto the Pi:
+- Use `ssh` to connect to the Pi:
 
-  - `InstallPBLSoftware.sh` is available in this README's directory
-  - You can copy things to the Pi by running this command on your laptop (**not** in the SSH session): `scp InstallPBLSoftware.sh username@address:`
-  - You can also use something like a private gist, or pre-copy the script onto the microSD and
-    use it from `/boot`, etc.
-  - **Note**: if you are copying the script from Windows, then the script may contain `\r\n` line-ending, which are invalid. You can
-    remove them with `sed -i 's/\r//' InstallPBLSoftware.sh`
+  - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
+  - Connect to the Pi with: `ssh username@address`
+  - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
+  - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
+  - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
+    `hostname.local` - depending on how you configured your network.
 
-- via SSH, get the Pi's MAC address:
+- via SSH, get the Pi's MAC address (if your hotspot software doesn't provide it):
 
   - Use this command: `ip link show wlan0 | grep -Po 'ether \K[^ ]*'`
   - **Add the `MAC` to the spreadsheet**. The MAC address is required for registering a device
     on managed (e.g. university) networks.
-  - (you might get lucky and see it via your hotspot UI also)
 
-- via SSH, run the `InstallPBLSoftware.sh` script:
+- via SSH, ensure `InstallPBLSoftware.sh` is formatted correctly:
 
-  - The script fully configures the Pi with VNC, i2c, camera, SPI, and all of the software
-    used throughout the PBL course
+  - If you copied `InstallPBLSoftware.sh` from a Windows machine, it may have incorrect line-endings
+  - Fix it by running `sed -i 's/\r//' InstallPBLSoftware.sh` in your SSH session
 
-  - Read the script for further information
+- via SSH, run `InstallPBLSoftware.sh`:
 
-- The Pi is now fully configured 🥳
+  - Run: `bash InstallPBLSoftware.sh`
+  - `InstallPBLSoftware.sh` script reconfigures the Pi ready for PBL (e.g. by enabling VNC, i2c,
+    SPI) and installs all software libraries used by all PBL labs
+
+> **At this point, the Pi is fully configured** 🥳
+>
+> You can now clone this base "PBL" image and flash it to all Pis. **However**, you should reconfigure
+> the cloned images appropriately with a unique `hostname`, user `password`, and (if necessary) SSID.
+> Otherwise, all Pis will appear to be exactly the same from a network/organizational PoV.
 
 
 # Test the Pi
