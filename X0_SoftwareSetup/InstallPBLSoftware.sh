@@ -41,10 +41,8 @@ install_bcm2835() {
   echo "----- install bcm2835 -----"
 
   pushd $(mktemp -d)
-
-  wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.60.tar.gz
-  tar zxvf bcm2835-1.60.tar.gz
-  cd bcm2835-1.60
+  git clone https://github.com/PortableBalanceLab/bcm2835
+  cd bcm2835/
   ./configure
   make
   sudo make check  # sudo required, for some reason
