@@ -1,8 +1,12 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+
+# this appears to originally be from: https://www.waveshare.com/wiki/Sense_HAT_(B)
+
 import time
 import smbus
 import math
+
 Gyro  = [0,0,0]
 Accel = [0,0,0]
 Mag   = [0,0,0]
