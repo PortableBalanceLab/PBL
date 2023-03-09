@@ -141,16 +141,15 @@ install_icm20948() {
   echo "----- /install ICM20948.py to /opt -----"
 }
 
-# function: installs hx711-multi library into /opt
-#
-# it's library code that's used in the force plate lab
+# function: installs hx711-multi library into the python
+# environment
 install_hx711multi() {
   echo "----- install hx711-multi -----"
   pushd $(mktemp -d)
 
-  git clone https://github.com/Morrious/hx711-multi.git
-  sudo rm -rf /opt/hx711-multi
-  sudo cp -ra hx711-multi /opt/
+  git clone https://github.com/PortableBalanceLab/hx711-multi.git
+  cd hx711-multi/
+  pip3 install .
 
   popd
   echo "----- /install hx711-multi -----"
