@@ -6,43 +6,42 @@ set -xeuo pipefail
 # these are URLs that the script has to fetch additional data from
 #
 # ideally, these should all be under `PortableBalanceLab`, so that the
-# project maintainers can patch it etc. independently from upstream library
+# PBL maintainers can patch it etc. independently of any upstream library
 # maintainers
 PBL_BCM2835_REPO="https://github.com/PortableBalanceLab/bcm2835"
 PBL_PROJECT_POSENET_REPO="https://github.com/PortableBalanceLab/project-posenet"
 PBL_ICM20948_REPO="https://github.com/PortableBalanceLab/ICM20948"
-PBL_HX711_REPO="https://github.com/PortableBalanceLab/hx711-multi.git"
+PBL_HX711_REPO="https://github.com/PortableBalanceLab/hx711-multi"
 
-# the Raspberry Pi interfaces that should be enabled
+# the Raspberry Pi hardware interfaces that should be enabled
 PBL_ENABLED_PI_INTERFACES=(
-  vnc              # recommended interfacing method
-  i2c              # some labs need it
   camera           # S1
-  spi              # (for good measure: this might not be strictly necessary)
+  i2c              # S2 and S4
+  vnc              # (how students typically access the Pi)
 )
 
 # the APT dependencies that should be installed
 PBL_APT_DEPS=(
-  automake         # for `autoreconf`
-  git              # for clone-ing things
-  mu-editor        # recommended to students for editing code
-  thonny           # alternative editor for students
+  automake         # for `autoreconf`ing bcm2835 in this script
+  git              # for `git clone`ing repositories in this script
+  python3-pip      # for `pip install`ing repositories in this script
   python3-tk       # used by GUI packages like guizero
-  python3-pip      # for installing python packages
+  mu-editor        # recommended to students for editing code
+  thonny           # recommended to students as an alternative for editing code
 )
 
 # the PIP dependencies that should be installed
 PBL_PIP_DEPS=(
-  numpy            # L2 mentions that this is a useful library
-  matplotlib       # all content uses this library
-  guizero          # L3/S1 - used for building GUIs
-  gpiozero         # L3?
-  RPi.GPIO         # S2 (IMU) - https://www.waveshare.com/wiki/Sense_HAT_(B)
-  spidev           # S2 (IMU) - https://www.waveshare.com/wiki/Sense_HAT_(B)
-  smbus            # S2 (IMU) - https://www.waveshare.com/wiki/Sense_HAT_(B) (they install it via `apt` as python-smbus)
-  pillow           # S1 (it was previously installed as an apt package called python-imaging)
-  Adafruit-Blinka  # S4 (EMG) - provides the CircuitPython support in Python
-  adafruit-circuitpython-ads1x15  # S4 (EMG) - more specific library that comes with the board (ADS1115)
+  matplotlib                      # all lectures and labs may use this
+  numpy                           # L2: recommends this as a useful library and TAs etc. may suggest it during lab sessions
+  guizero                         # L3 and S1: used to build GUIs (e.g. camera booths)
+  gpiozero                        # L3: used to blink an LED
+  pillow                          # S1: for processing images (previously: called `python-imaging` in apt)
+  RPi.GPIO                        # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B))
+  spidev                          # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B))
+  smbus                           # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B)) (previously: called `python-smbus` in apt)
+  Adafruit-Blinka                 # S4: CircuitPython support
+  adafruit-circuitpython-ads1x15  # S4: associated library for the ADS1115 board
 )
 
 # downloads+installs bcm2835 on the pi
@@ -52,9 +51,9 @@ PBL_PIP_DEPS=(
 #     - https://www.waveshare.com/wiki/Sense_HAT_(B)
 install_bcm2835() {
   echo "----- starting install_bcm2835 -----"
-
   pushd $(mktemp -d)
-  git clone "${PBL_BCM2835_REPO}"
+
+  git clone "${PBL_BCM2835_REPO}" bcm2835/
   cd bcm2835/
   autoreconf -f -i  # necessary, because `git` doesn't track timestamps from the original archive
   ./configure
@@ -63,7 +62,6 @@ install_bcm2835() {
   sudo make install
 
   popd
-
   echo "----- finished install_bcm2835 -----"
 }
 
@@ -129,7 +127,7 @@ install_posenet_code() {
   echo "----- starting install_posenet_code -----"
   pushd $(mktemp -d)
 
-  git clone --depth=1 "${PBL_PROJECT_POSENET_REPO}"
+  git clone --depth=1 "${PBL_PROJECT_POSENET_REPO}" project-posenet/
 
   # install requirements (required to actually run it)
   ./project-posenet/install_requirements.sh
@@ -146,10 +144,15 @@ install_posenet_code() {
 install_icm20948() {
   echo "----- starting install_icm20948 -----"
   pushd $(mktemp -d)
-  git clone "${PBL_ICM20948_REPO}"
+
+  git clone "${PBL_ICM20948_REPO}" ICM20948/
+
+  # copy ICM20948.py into /opt so that users can copy it
+  # into their home directory during S2
   cd ICM20948/
   chmod 644 ICM20948.py
   sudo cp ICM20948.py /opt/
+
   popd
   echo "----- finished install_icm20948 -----"
 }
@@ -161,7 +164,16 @@ install_hx711multi() {
   echo "----- starting install_hx711multi -----"
   pushd $(mktemp -d)
 
-  git clone "${PBL_HX711_REPO}"
+  git clone "${PBL_HX711_REPO}" hx711-multi/
+
+  # copy the repo into /opt because S3 mentions running:
+  #     /opt/hx711-multi/tests/calibrate.py
+  sudo rm -rf /opt/hx711-multi
+  sudo cp -ra hx711-multi /opt/hx711-multi
+
+  # and use `pip` to install it as a python package, so that
+  # students can just `import hx711_multi.hx711` regardless of
+  # where their downstream python script is
   cd hx711-multi/
   pip3 install .
 
@@ -172,15 +184,19 @@ install_hx711multi() {
 # installs apt-based (system) dependencies
 install_apt_dependencies() {
   echo "----- starting install_apt_dependencies -----"
+
   sudo apt update
   sudo apt install -y ${PBL_APT_DEPS[@]}
+
   echo "----- finished install_apt_dependencies -----"
 }
 
 # installs python dependencies
 install_python_dependencies() {
   echo "----- starting install_python_dependencies -----"
+
   sudo pip install ${PBL_PIP_DEPS[@]}
+
   echo "----- finished install_python_dependencies -----"
 }
 
