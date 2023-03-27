@@ -66,7 +66,7 @@ You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab pra
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
-| S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S2`-`S5`) require doing this first** |
+| S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S1`-`S4`) require doing this first** |
 | S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
 | S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
 | S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
