@@ -2,7 +2,7 @@
 
 > Portable Balance Lab course material for students
 
-The Portable Balance Lab (PBL) is a practical course that teaches people how to create their own balance lab from raw components and software. This repository contains all of the learner-facing course material.
+The Portable Balance Lab (PBL) is a practical course that teaches students how to create their own balance lab from raw components and software. This repository contains all of the learner-facing course material.
 
 
 # <a name="getting-started"></a> 🚀 Getting Started
