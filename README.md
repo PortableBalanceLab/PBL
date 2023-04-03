@@ -89,3 +89,14 @@ These materials are extra notes/examples that parts of the course may refer to.
 ### Where is the Schedule?
 
 This repository only contains core course materials. Schedules should be made available by your teachers via their teaching platform of choice (e.g. in TU Delft, Brightspace).
+
+# Acknowledgements
+
+The PBL lab wouldn't be possible without organization and support from a bunch of people. Here's a list of some of them:
+
+- Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer
+- Jinne Geelen (@JinneGeelen, J.E.Geelen@tudelft.nl): Founding lab designer and implementer
+
+- Reinier van Antwerpen (R.vanAntwerpen@tudelft.nl): Hardware support (3D printing)
+- Jacques Brenkman (J.A.Brenkman@tudelft.nl): Hardware support (electronics and PCB design)
+- Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support
