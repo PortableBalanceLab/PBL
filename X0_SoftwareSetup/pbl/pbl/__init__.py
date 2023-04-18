@@ -32,7 +32,7 @@ required_pip_packages = {
 _all_modules = {sys.modules[__name__], pbl.l2, pbl.l3, pbl.s1, pbl.s2, pbl.s3, pbl.s4}
 
 def _printing_subprocess_run(args, *other_args, **kwargs):
-    print(f"running: {' '.join(args)}")
+    print(f"running: {' '.join(args)}", flush=True)
     return subprocess.run(args, *other_args, **kwargs)
 
 # returns the set called `set_identifier` from `module`, or an empty set if not found
