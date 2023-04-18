@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# submodules of the course
+# components of the PBL course
 import pbl.l2
 import pbl.l3
 import pbl.s1
@@ -88,7 +88,7 @@ def install_pip_dependencies():
     _printing_subprocess_run(["pip", "install", *deps])
     print("----- finished install pip dependencies -----")
 
-# tries to run one `on_custom_install` step for one PBL module
+# tries to run one `on_custom_install` step for one PBL course component (e.g. s1)
 def _try_run_custom_install_step(module):
     if hasattr(module, "on_custom_install"):
         print(f"--- starting {module.__name__}.on_custom_install() ---")
@@ -98,12 +98,12 @@ def _try_run_custom_install_step(module):
         # print(f"{module.__name__}: has no on_custom_install method: skipping")
         pass
 
-# tries to run all `on_custom_install` steps for all PBL modules
+# tries to run all `on_custom_install` steps for all PBL course components
 def run_custom_install_steps():
     for module in _all_modules:
         _try_run_custom_install_step(module)
 
-# installs all software used by PBL practicals
+# installs all software used by PBL course components
 def install_required_software():
     print("----- starting installing required software")
     install_apt_dependencies()

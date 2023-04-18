@@ -1,6 +1,7 @@
+import pbl.utils
+
 import os
 import shutil
-import subprocess
 import tempfile
 import urllib.request
 
@@ -30,10 +31,6 @@ def on_custom_install():
     _install_coral_example()
     _install_posenet_code()
 
-def _run_in_shell(cmd, cwd=None):
-    print(f"running: {cmd}", flush=True)
-    return subprocess.run(cmd, shell=True, check=True, cwd=cwd)
-
 # downloads+installs all TPU runtime coral.ai libraries
 # needed to make the neural network camera work (for S1)
 #
@@ -42,10 +39,10 @@ def _install_coral_libraries():
     print("starting installing coral libraries")
 
     # install the Edge TPU runtime (USB layer)
-    _run_in_shell('echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list')
-    _run_in_shell('curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
-    _run_in_shell('sudo apt update')
-    _run_in_shell('sudo apt install -y libedgetpu1-std python3-pycoral')
+    pbl.utils.run_shell_command('echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list')
+    pbl.utils.run_shell_command('curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
+    pbl.utils.run_shell_command('sudo apt update')
+    pbl.utils.run_shell_command('sudo apt install -y libedgetpu1-std python3-pycoral')
 
     print("finished installing coral libraries")
 
@@ -88,14 +85,15 @@ def _install_coral_example():
             os.chmod(os.path.join(temp_dir, asset_file), 0o644)
 
         print("printing temporary directory contents")
-        _run_in_shell(f"ls -la {temp_dir}")
+        pbl.utils.run_shell_command(f"ls -la {temp_dir}")
 
-        # remove any existing `coral_example` dir and copy this one over it
-        shutil.rmtree("/opt/coral_example")
+        if os.path.exists("/opt/coral_example"):
+            shutil.rmtree("/opt/coral_example")  # remove existing install
+        # install new example code
         shutil.copytree(temp_dir, "/opt/coral_example")
 
         print("printing new /opt/coral_example contents")
-        _run_in_shell("ls -la /opt/coral_example")
+        pbl.utils.run_shell_command("ls -la /opt/coral_example")
 
     print("finished installing coral test model data + scripts")
 
@@ -105,14 +103,14 @@ def _install_posenet_code():
     print("starting install_posenet_code")
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        _run_in_shell(f"git clone --depth=1 '{PROJECT_POSENET_REPO}' project-posenet/", cwd=temp_dir)
+        pbl.utils.run_shell_command(f"git clone --depth=1 '{PROJECT_POSENET_REPO}' project-posenet/", cwd=temp_dir)
 
         # install requirements (required to actually run it)
-        _run_in_shell("./project-posenet/install_requirements.sh", cwd=temp_dir)
+        pbl.utils.run_shell_command("./project-posenet/install_requirements.sh", cwd=temp_dir)
 
         # install into /opt/project-posenet, which is where students are told to find it
-        _run_in_shell("sudo rm -rf /opt/project-posenet", cwd=temp_dir)
-        _run_in_shell("sudo cp -ra project-posenet /opt/project-posenet", cwd=temp_dir)
+        pbl.utils.run_shell_command("sudo rm -rf /opt/project-posenet", cwd=temp_dir)
+        pbl.utils.run_shell_command("sudo cp -ra project-posenet /opt/project-posenet", cwd=temp_dir)
 
     # TODO: list directory contents
 
