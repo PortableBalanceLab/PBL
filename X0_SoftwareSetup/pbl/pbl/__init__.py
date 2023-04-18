@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
 # submodules of the course
-import l2
-import l3
-import s1
-import s2
-import s3
-import s4
+import pbl.l2
+import pbl.l3
+import pbl.s1
+import pbl.s2
+import pbl.s3
+import pbl.s4
 
 # general libs
 import sys
@@ -29,7 +29,7 @@ required_pip_packages = {
 }
 
 # all modules that should be configured+installed by this top-level package
-_all_modules = {sys.modules[__name__], l2, l3, s1, s2, s3, s4}
+_all_modules = {sys.modules[__name__], pbl.l2, pbl.l3, pbl.s1, pbl.s2, pbl.s3, pbl.s4}
 
 def _printing_subprocess_run(args, *other_args, **kwargs):
     print(f"running: {' '.join(args)}")
@@ -57,13 +57,13 @@ def _get_pi_interface_state(interface_name):
 # sets the state (boolean) of one particular hardware interface on the Pi
 def _set_pi_interface_state(interface_name, desired_state):
     state_str = "0" if desired_state else "1"  # 0 means "on" in Pi-land
-    _printing_subprocess_run(["dir", "raspi-config", f"set_{interface_name}", state_str])
+    _printing_subprocess_run(["raspi-config", "nonint", f"do_{interface_name}", state_str], check=True)
 
 # enables one particular hardware interface on the Pi
 def _enable_pi_interface(interface_name):
     print(f"enabling {interface_name}")
     was_enabled = _get_pi_interface_state(interface_name)
-    _set_pi_interface_state(interface_name)
+    _set_pi_interface_state(interface_name, True)
     is_enabled = _get_pi_interface_state(interface_name)
     print(f"enabled {interface_name}: was_enabled = {was_enabled}, is_enabled = {is_enabled}")
 
