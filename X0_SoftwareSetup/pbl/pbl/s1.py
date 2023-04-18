@@ -1,9 +1,12 @@
-import pbl.utils
+# content here is specific to S1
+
+from pbl.common import run_in_terminal, print_dir_contents
 
 import os
 import shutil
 import tempfile
 import urllib.request
+
 
 required_pi_interfaces = {
     "camera",      # for capturing images via the hardware ribbon interface
@@ -39,10 +42,10 @@ def _install_coral_libraries():
     print("starting installing coral libraries")
 
     # install the Edge TPU runtime (USB layer)
-    pbl.utils.run_shell_command('echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list')
-    pbl.utils.run_shell_command('curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
-    pbl.utils.run_shell_command('sudo apt update')
-    pbl.utils.run_shell_command('sudo apt install -y libedgetpu1-std python3-pycoral')
+    run_in_terminal('echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list')
+    run_in_terminal('curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
+    run_in_terminal('sudo apt update')
+    run_in_terminal('sudo apt install -y libedgetpu1-std python3-pycoral')
 
     print("finished installing coral libraries")
 
@@ -85,16 +88,14 @@ def _install_coral_example():
             os.chmod(os.path.join(temp_dir, asset_file), 0o644)
 
         print("printing temporary directory contents")
-        pbl.utils.run_shell_command(f"ls -la {temp_dir}")
+        run_in_terminal(f"ls -la {temp_dir}")
 
         if os.path.exists("/opt/coral_example"):
             shutil.rmtree("/opt/coral_example")  # remove existing install
         # install new example code
         shutil.copytree(temp_dir, "/opt/coral_example")
 
-        print("printing new /opt/coral_example contents")
-        pbl.utils.run_shell_command("ls -la /opt/coral_example")
-
+    print_dir_contents("/opt/coral_example")
     print("finished installing coral test model data + scripts")
 
 # installs posenet source code that the students
@@ -103,15 +104,14 @@ def _install_posenet_code():
     print("starting install_posenet_code")
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        pbl.utils.run_shell_command(f"git clone --depth=1 '{PROJECT_POSENET_REPO}' project-posenet/", cwd=temp_dir)
+        run_in_terminal(f"git clone --depth=1 '{PROJECT_POSENET_REPO}' project-posenet/", cwd=temp_dir)
 
         # install requirements (required to actually run it)
-        pbl.utils.run_shell_command("./project-posenet/install_requirements.sh", cwd=temp_dir)
+        run_in_terminal("./project-posenet/install_requirements.sh", cwd=temp_dir)
 
         # install into /opt/project-posenet, which is where students are told to find it
-        pbl.utils.run_shell_command("sudo rm -rf /opt/project-posenet", cwd=temp_dir)
-        pbl.utils.run_shell_command("sudo cp -ra project-posenet /opt/project-posenet", cwd=temp_dir)
+        run_in_terminal("sudo rm -rf /opt/project-posenet", cwd=temp_dir)
+        run_in_terminal("sudo cp -ra project-posenet /opt/project-posenet", cwd=temp_dir)
 
-    # TODO: list directory contents
-
+    print_dir_contents("/opt/project-posenet")
     print("finished install_posenet_code")

@@ -1,3 +1,5 @@
+# content here is specific to S4
+
 required_pi_interfaces = {
     "i2c",                             # hardware interface used by the lab
 }

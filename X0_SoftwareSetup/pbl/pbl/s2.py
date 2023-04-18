@@ -1,8 +1,11 @@
-import pbl.utils
+# content here is specific to S2
+
+from pbl.common import run_in_terminal, print_dir_contents
 
 import os
 import shutil
 import tempfile
+
 
 required_pi_interfaces = {
     "i2c",              # hardware interface used by the IMU? (legacy?)
@@ -37,13 +40,13 @@ def _install_bcm2835():
     print("starting installing bcm2835")
     with tempfile.TemporaryDirectory() as temp_dir:
         # clone BCM2835 source code
-        pbl.utils.run_shell_command(f"git clone '{BCM2835_REPO}' bcm2835/", cwd=temp_dir)
+        run_in_terminal(f"git clone '{BCM2835_REPO}' bcm2835/", cwd=temp_dir)
 
         # reconfigure: this is necessary, because `git` doesn't track timestamps from the original archive
-        pbl.utils.run_shell_command("autoreconf -f -i", cwd=os.path.join(temp_dir, "bcm2835"))
+        run_in_terminal("autoreconf -f -i", cwd=os.path.join(temp_dir, "bcm2835"))
 
         # configure, build, check, and install the library system-wide
-        pbl.utils.run_shell_command("./configure && make && make check && make install", cwd=os.path.join(temp_dir, "bcm2835"))
+        run_in_terminal("./configure && make && make check && make install", cwd=os.path.join(temp_dir, "bcm2835"))
 
     print("finished installing bcm2835")
 
@@ -52,7 +55,7 @@ def _install_icm20948():
     print("starting installing icm20948")
     with tempfile.TemporaryDirectory() as temp_dir:
         # clone ICM20948 source code
-        pbl.utils.run_shell_command(f"git clone '{ICM20948_REPO}' ICM20948/", cwd=temp_dir)
+        run_in_terminal(f"git clone '{ICM20948_REPO}' ICM20948/", cwd=temp_dir)
 
         icm20948_script_path = os.path.join(temp_dir, "ICM20948", "ICM20948.py")
 
@@ -62,4 +65,5 @@ def _install_icm20948():
         # copy it into `/opt`, which is where S2 says students can find it
         shutil.copy(icm20948_script_path, "/opt/ICM20948.py")
 
+    print_dir_contents("/opt")
     print("finished installing icm20948")

@@ -1,7 +1,8 @@
 # `X0`: Extra Content 0: Software Setup
 
 > ℹ️ **Note**: If you're a student on the course, then you probably don't need to **do** anything
-> on this page. The organizers have already done this for you. This is provided for your information.
+> on this page. The organizers have probably already installed the necessary software for you. This 
+> page is provided for your information.
 
 This guide sets up a Raspberry Pi (Zero or 4) from scratch such that it's ready for use in the
 practical labs (content beginning with `S`).
@@ -15,7 +16,7 @@ Use whatever you prefer (e.g. google doc). The spreadsheet will have the followi
 
 - `ID`: unique physical ID that was written on the Pi
 - `SSID`: WiFi SSID that the Pi will automatically join on power-on
-- `WiFi Password`: pssword for the WiFi network identified by `SSID`
+- `WiFi Password`: password for the WiFi network identified by `SSID`
 - `hostname`: unique virtual hostname for this Pi
 - `password`: password for the `pbl` account
 - `MAC`: physical MAC address of the Pi
@@ -25,7 +26,7 @@ This information is filled out while setting up the Pi.
 
 # Physically ID the Pi
 
-- Use a permanant marker to physically write an ID on the Pi somewhere (e.g. it can just be a number).
+- Use a permanent marker to physically write an ID on the Pi somewhere (e.g. it can just be a number).
 - Write the same ID on the SD card
 - **Add the `ID` to the spreadsheet**. The ID is useful to have in case Pis are mixed up, or for cross-checking with
   other information.
@@ -110,41 +111,32 @@ With the "base" Raspberry Pi OS installed, and with it logged onto a (probably, 
 can now use SSH to configure the Raspberry Pi with PBL-specific software and configuration options (e.g.
 enable VNC and i2c).
 
-- Use `scp` to copy this directory (`X0_SoftwareSetup`) onto the Pi:
+- Use `scp` to copy the `pbl` subdirectory in `X0_SoftwareSetup` onto the Pi:
 
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
-  - Copy this directory to the Pi with: `scp -r X0_SoftwareSetup username@address:`
+  - Copy `pbl` to the Pi with: `scp -r pbl/ username@address:`
   - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
   - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
   - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
     `hostname.local` - depending on how you configured your network.
   - **Note 3**: the colon (`:`) at the end of `username@address:` is important
 
-- Use `ssh` to connect to the Pi:
+- Use `ssh` to install the `pbl` package onto the pi and then use `pbl setup` to setup the pi:
 
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
   - Connect to the Pi with: `ssh username@address`
+  - Run `sudo pip install --force-reinstall ./pbl` to install the `pbl` package you copied to the Pi system-wide
+  - Run `sudo pbl setup` to setup the Pi
   - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
   - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
   - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
-    `hostname.local` - depending on how you configured your network.
+    `hostname.local` - depending on how you configured your network
 
 - via SSH, get the Pi's MAC address (if your hotspot software doesn't provide it):
 
   - Use this command: `ip link show wlan0 | grep -Po 'ether \K[^ ]*'`
   - **Add the `MAC` to the spreadsheet**. The MAC address is required for registering a device
     on managed (e.g. university) networks.
-
-- via SSH, ensure `InstallPBLSoftware.sh` is formatted correctly:
-
-  - If you copied `InstallPBLSoftware.sh` from a Windows machine, it may have incorrect line-endings
-  - Fix it by running `sed -i 's/\r//' InstallPBLSoftware.sh` in your SSH session
-
-- via SSH, run `InstallPBLSoftware.sh`:
-
-  - Run: `bash InstallPBLSoftware.sh`
-  - `InstallPBLSoftware.sh` script reconfigures the Pi ready for PBL (e.g. by enabling VNC, i2c,
-    SPI) and installs all software libraries used by all PBL labs
 
 > **At this point, the Pi is fully configured** 🥳
 >
