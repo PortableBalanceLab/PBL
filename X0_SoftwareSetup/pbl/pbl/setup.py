@@ -1,21 +1,10 @@
 # content here relates to setting up a (potentially, fresh) Raspberry Pi ready for
 # the PBL course
 
-# components of the PBL course
-import pbl.common
-import pbl.l2
-import pbl.l3
-import pbl.s1
-import pbl.s2
-import pbl.s3
-import pbl.s4
+import pbl
 
 # general libs
 import subprocess
-
-
-# all modules that should be configured+installed by the setup process
-_all_modules = {pbl.common, pbl.l2, pbl.l3, pbl.s1, pbl.s2, pbl.s3, pbl.s4}
 
 def _printing_subprocess_run(args, *other_args, **kwargs):
     print(f"running: {' '.join(args)}", flush=True)
@@ -56,21 +45,21 @@ def _enable_pi_interface(interface_name):
 # configures the Pi's hardware interfaces ready for PBL
 def configure_pi_interfaces():
     print("----- starting configuring pi interfaces -----")
-    for interface_name in _get_union_of_module_string_sets(_all_modules, "required_pi_interfaces"):
+    for interface_name in _get_union_of_module_string_sets(pbl.all_modules, "required_pi_interfaces"):
         _enable_pi_interface(interface_name)
     print("----- finished configuring pi interfaces -----")
 
 # installs all APT dependencies used in PBL
 def install_apt_dependencies():
     print("----- starting install apt dependencies -----")
-    deps = _get_union_of_module_string_sets(_all_modules, "required_apt_packages")
+    deps = _get_union_of_module_string_sets(pbl.all_modules, "required_apt_packages")
     _printing_subprocess_run(["apt-get", "install", *deps], check=True)
     print("----- finished install apt dependencies -----")
 
 # installs all PIP dependencies used in PBL
 def install_pip_dependencies():
     print("----- starting install pip dependencies -----")
-    deps = _get_union_of_module_string_sets(_all_modules, "required_pip_packages")
+    deps = _get_union_of_module_string_sets(pbl.all_modules, "required_pip_packages")
     _printing_subprocess_run(["pip", "install", *deps])
     print("----- finished install pip dependencies -----")
 
@@ -86,7 +75,7 @@ def _try_run_custom_install_step(module):
 
 # tries to run all `on_custom_install` steps for all PBL course components
 def run_custom_install_steps():
-    for module in _all_modules:
+    for module in pbl.all_modules:
         _try_run_custom_install_step(module)
 
 # installs all software used by PBL course components

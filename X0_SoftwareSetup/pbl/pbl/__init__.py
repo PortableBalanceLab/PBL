@@ -1,3 +1,10 @@
-# this file is here because `python` requires an `__init__.py` file at the root of a package
-#
-# all code for the `pbl` package is contained in modules (the other py files in this dir)
+import pbl.common
+import pbl.l2
+import pbl.l3
+import pbl.s1
+import pbl.s2
+import pbl.s3
+import pbl.s4
+
+# all modules that should be configured, installed, and tested
+all_modules = {pbl.common, pbl.l2, pbl.l3, pbl.s1, pbl.s2, pbl.s3, pbl.s4}

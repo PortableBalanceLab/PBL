@@ -1,10 +1,12 @@
 # content here is specific to S2
 
+import pbl.common
 from pbl.common import run_in_terminal, print_dir_contents
 
 import os
 import shutil
 import tempfile
+import unittest
 
 
 required_pi_interfaces = {
@@ -15,7 +17,6 @@ required_apt_packages = {
     "git",              # for `clone`ing bcm2835 and icm20948
     "automake",         # for `autoconf`
     "build-essential",  # ensures there's a C/C++ toolchain available
-    "python3-tk",       # used by `guizero` (L3 and S1) for rendering the GUI
 }
 
 required_pip_packages = {
@@ -67,3 +68,20 @@ def _install_icm20948():
 
     print_dir_contents("/opt")
     print("finished installing icm20948")
+
+# tests that check that the Pi has been setup correctly for S2
+class Tests(unittest.TestCase):
+
+    def test_can_import_smbus(self):
+        # used internally by ICM20948
+        assert pbl.common.can_import("smbus")
+
+    def test_ICM20948_is_in_opt(self):
+        assert os.path.exists("/opt/ICM20948.py")
+        assert os.path.isfile("/opt/ICM20948.py")
+
+    def test_can_import_matplotlib(self):
+        assert pbl.common.can_import("matplotlib")
+
+    def test_can_import_matplotlib_animation_module(self):
+        assert pbl.common.can_import("matplotlib.animation")

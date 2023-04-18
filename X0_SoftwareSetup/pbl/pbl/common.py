@@ -1,6 +1,11 @@
 # content here is common to all parts of the PBL course
 
+import pbl.common
+
+import importlib
+import shutil
 import subprocess
+import unittest
 
 
 required_pi_interfaces = {
@@ -15,8 +20,8 @@ required_apt_packages = {
 }
 
 required_pip_packages = {
-    "matplotlib",   # almost all lectures/practicals may use this, so always install it
-    "numpy",        # TAs etc. may suggest it as a useful tool during lab sessions
+    "matplotlib",   # suggested in L2 and used by many lectures/practicals
+    "numpy",        # suggested in L2 and may be recommended by TAs etc.
 }
 
 # run `cmd` as as-if running it in a terminal
@@ -28,3 +33,27 @@ def run_in_terminal(cmd, cwd=None):
 def print_dir_contents(path):
     print(f"printing {path} contents")
     run_in_terminal(f"ls -la {path}")
+
+def can_import(module_name_str):
+    return importlib.util.find_spec("matplotlib") is not None
+
+# tests that check that the Pi has been setup correctly for L2
+class Tests(unittest.TestCase):
+
+    def test_vnc_is_enabled(self):
+        assert subprocess.run(["raspi-config", "nonint", f"get_vnc"], check=True, capture_output=True, text=True).stdout.strip() == "0"
+
+    def test_can_import_matplotlib(self):
+        assert pbl.common.can_import("matplotlib")
+
+    def test_can_import_numpy(self):
+        assert pbl.common.can_import("numpy")
+
+    def test_pip_available_on_command_line(self):
+        assert shutil.which("pip") is not None
+
+    def test_mu_available_on_command_line(self):
+        assert shutil.which("mu-editor") is not None
+
+    def test_thonny_available_on_command_line(self):
+        assert shutil.which("thonny") is not None
