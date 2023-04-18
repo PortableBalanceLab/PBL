@@ -90,10 +90,13 @@ def install_pip_dependencies():
 
 # tries to run one `on_custom_install` step for one PBL module
 def _try_run_custom_install_step(module):
-    try:
-        module.on_custom_install()
-    except AttributeError:
-        print(f"{module.__name__}: has no on_custom_install method: skipping")
+    if hasattr(module, "on_custom_install"):
+        print(f"--- starting {module.__name__}.on_custom_install() ---")
+        getattr(module, "on_custom_install")()
+        print(f"--- finished {module.__name__}.on_custom_install() ---")
+    else:
+        # print(f"{module.__name__}: has no on_custom_install method: skipping")
+        pass
 
 # tries to run all `on_custom_install` steps for all PBL modules
 def run_custom_install_steps():
