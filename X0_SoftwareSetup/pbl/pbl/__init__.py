@@ -32,7 +32,7 @@ required_pip_packages = {
 _all_modules = {sys.modules[__name__], l2, l3, s1, s2, s3, s4}
 
 def _printing_subprocess_run(args, *other_args, **kwargs):
-    print("running: f{','.join(args)}")
+    print(f"running: {' '.join(args)}")
     return subprocess.run(args, *other_args, **kwargs)
 
 # returns the set called `set_identifier` from `module`, or an empty set if not found
@@ -40,11 +40,11 @@ def _try_get_module_string_set(module, set_identifier):
     if hasattr(module, set_identifier):
         return getattr(module, set_identifier)
     else:
-        return {}  # if it isn't defined, treat it as an empty set, rather than being missing
+        return set()  # if it isn't defined, treat it as an empty set, rather than being missing
 
 # returns the union of all sets called `set_identifier` from a sequence of `modules`
 def _get_union_of_module_string_sets(modules, set_identifier):
-    rv = {}
+    rv = set()
     for module in modules:
         rv = rv.union(_try_get_module_string_set(module, set_identifier))
     return rv
@@ -57,7 +57,7 @@ def _get_pi_interface_state(interface_name):
 # sets the state (boolean) of one particular hardware interface on the Pi
 def _set_pi_interface_state(interface_name, desired_state):
     state_str = "0" if desired_state else "1"  # 0 means "on" in Pi-land
-    _printing_subprocess_run(["raspi-config", "nonint", f"set_{interface_name}", state_str])
+    _printing_subprocess_run(["dir", "raspi-config", f"set_{interface_name}", state_str])
 
 # enables one particular hardware interface on the Pi
 def _enable_pi_interface(interface_name):

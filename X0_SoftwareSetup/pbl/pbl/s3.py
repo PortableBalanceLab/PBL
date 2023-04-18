@@ -7,8 +7,12 @@ required_apt_packages = {
 
 HX711_REPO="https://github.com/PortableBalanceLab/hx711-multi"
 
+def on_custom_install():
+    print("S3: on_custom_install TODO")
+    _install_hx711multi()
+
 # installs hx711-multi library into the python environment
 #
 # it's used for reading data from the ADC
 def _install_hx711multi():
-    pass
+    print("S3: install_hx711multi TODO")

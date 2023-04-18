@@ -18,14 +18,19 @@ required_pip_packages = {
 BCM2835_REPO = "https://github.com/PortableBalanceLab/bcm2835"
 ICM20948_REPO="https://github.com/PortableBalanceLab/ICM20948"
 
+def on_custom_install():
+    print("S2: on_custom_install TODO")
+    _install_bcm2835()
+    _install_icm20948()
+
 # downloads+installs bcm2835 on the pi
 #
 # bcm2835 is used in S2 (IMU). The waveshare guide for SenseHAT
 # mentions that it must be installed:
 #     - https://www.waveshare.com/wiki/Sense_HAT_(B)
 def _install_bcm2835():
-    pass
+    print("S2: install_bcm2835 TODO")
 
 # installs ICM20948.py, which is used in S2
 def _install_icm20948():
-    pass
+    print("S2: install_icm20948 TODO")

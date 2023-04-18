@@ -19,15 +19,17 @@ PROJECT_POSENET_REPO="https://github.com/PortableBalanceLab/project-posenet"
 # performs custom install steps (i.e. steps that aren't just pi interfaces, or
 # installing off-the-shelf packages)
 def on_custom_install():
+    print("S1: custom install TODO")
     _install_coral()
     _install_coral_example()
+    _install_posenet_code()
 
 # downloads+installs all TPU runtime coral.ai libraries
 # needed to make the neural network camera work (for S1)
 #
 # pulled from: https://coral.ai/docs/accelerator/get-started
 def _install_coral():
-    pass
+    print("S1: install coral TODO")
 
 # installs extra coral test model data + script that shows
 # the students a basic classification example in S1
@@ -37,10 +39,9 @@ def _install_coral_example():
     # this code is based on https://github.com/google-coral/tflite
     #
     # see dir: `python/examples/classification`, which contains: `install_requirements.sh`
-
-    pass
+    print("S1: install coral example TODO")
 
 # installs posenet source code that the students
 # modify in S1 to create their camera booth
 def _install_posenet_code():
-    pass
+    print("S1: install posenet TODO")
