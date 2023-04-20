@@ -73,17 +73,19 @@ correct WiFi credentials, hostname, SSH, username, and password).
 - Use the Raspberry Pi Imager software to flash Raspbian onto the Pi's microSD card. Click the settings
   gear to change the installation configuration:
 
-  - Assign a unique `hostname` (e.g. `pbl1`). It's usually a good idea for `hostname` to be related to
-    the physical ID of the Pi (e.g. if you write `1` on the Pi then assign the hostname as `pbl1` or
-    similar).
+  - Assign a unique `hostname` derived from the physical ID. For example, if the physical ID is `A` then the hostname
+    should probably be something like `pblhosta`.
   - **Add the `hostname` to the spreadsheet**. The hostname is useful in various networking-related
     activities (e.g. it will be listed in your hotspot).
   - Enable SSH and use password authentication
-  - Use a `username` of `pbl`
-  - Assign a unique `password` for each Pi. The password should be a basic easy-to-write one.
+  - Use a `username` of `pbl` for SSH authentication
+  - Assign a unique `password` for each Pi. The password should be a basic easy-to-write one. For example,
+    from a child's password generator or similar.
   - **Add the `password` to the spreadsheet**. The password is **required** for configuring/using the
     Pi. Do not mix this one up.
-  - Configure wireless LAN to use the appropriate (e.g. bootstrap) network 
+  - Configure wireless LAN to use the appropriate (e.g. bootstrap) WiFi network. The SSID of the
+    network is usually related to the physical ID (e.g. if the physical ID is `A` then the wifi
+    SSID should probably be `pblwifia`). The WiFi password should match the `password` of each pi.
   - Set locale/region to `Netherlands`
   - Set keyboard layout to `us`
 
