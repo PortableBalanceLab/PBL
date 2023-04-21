@@ -13,7 +13,9 @@ To get started, follow these steps:
 
 1. **Download a Copy of this Repository**:
 
-    1. `git clone https://github.com/PortableBalanceLab/PBLstaging` (TODO: this should eventually become a download to a ZIP containing a particular version of the lab notes)
+    1. Go to the [releases](../../releases) page and download a `zip` of the latest release
+       (unless a specific version is specified)
+    2. Unzip the course content somewhere (e.g. on your `Desktop`)
 
 2. **Get Jupyter**:
 
