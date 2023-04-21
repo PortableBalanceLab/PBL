@@ -94,11 +94,13 @@ This repository only contains core course materials. Schedules should be made av
 
 # Acknowledgements
 
-The PBL lab wouldn't be possible without organization and support from a bunch of people. Here's a list of some of them:
+The PBL lab wouldn't be possible without organization and support from a bunch of people. Here's an
+alphabetical list of some of them:
 
-- Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer
-- Jinne Geelen (@JinneGeelen, J.E.Geelen@tudelft.nl): Founding lab designer and implementer
-
-- Reinier van Antwerpen (R.vanAntwerpen@tudelft.nl): Hardware support (3D printing)
-- Jacques Brenkman (J.A.Brenkman@tudelft.nl): Hardware support (electronics and PCB design)
-- Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support
+- Reinier van Antwerpen (R.vanAntwerpen@tudelft.nl): Hardware support (3D printing), 2022 & 2023
+- Jacques Brenkman (J.A.Brenkman@tudelft.nl): Hardware support (electronics and PCB design), 2023
+- Jinne Geelen (@JinneGeelen, J.E.Geelen@tudelft.nl): Founding lab designer and implementer, 2022
+- Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support and open-sourcing, 2022 & 2023
+- Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer, 2022 & 2023
+- Janne Luijten (@JanneLuijten, j.a.m.luijten@student.tudelft.nl): Teaching Assistant, 2023
+- Fred Roeling (f.q.c.roeling@tudelft.nl): IT and networking support, 2022 & 2023
