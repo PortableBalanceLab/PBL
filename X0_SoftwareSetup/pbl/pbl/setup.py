@@ -53,7 +53,7 @@ def configure_pi_interfaces():
 def install_apt_dependencies():
     print("----- starting install apt dependencies -----")
     deps = _get_union_of_module_string_sets(pbl.all_modules, "required_apt_packages")
-    _printing_subprocess_run(["apt-get", "install", *deps], check=True)
+    _printing_subprocess_run(["apt-get", "install", "-y", *deps], check=True)
     print("----- finished install apt dependencies -----")
 
 # installs all PIP dependencies used in PBL
