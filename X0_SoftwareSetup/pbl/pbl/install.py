@@ -87,8 +87,8 @@ def install_required_software():
     print("----- finished installing required software")
 
 # configures + installs the Pi ready for PBL
-def setup():
-    print("----- starting setup of Pi for PBL -----")
+def install():
+    print("----- starting install of Pi for PBL -----")
     configure_pi_interfaces()
     install_required_software()
-    print("----- finished setup of Pi for PBL: enjoy :> -----")
+    print("----- finished install of Pi for PBL: enjoy :> -----")

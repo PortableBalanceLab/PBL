@@ -123,12 +123,12 @@ enable VNC and i2c).
     `hostname.local` - depending on how you configured your network.
   - **Note 3**: the colon (`:`) at the end of `username@address:` is important
 
-- Use `ssh` to install the `pbl` package onto the pi and then use `pbl setup` to setup the pi:
+- Use `ssh` to install the `pbl` package onto the pi and then use `pbl install` to setup the pi:
 
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
   - Connect to the Pi with: `ssh username@address`
   - Run `sudo pip install --force-reinstall ./pbl` to install the `pbl` package you copied to the Pi system-wide
-  - Run `sudo pbl setup` to setup the Pi
+  - Run `sudo pbl install` to setup the Pi
   - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
   - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
   - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
