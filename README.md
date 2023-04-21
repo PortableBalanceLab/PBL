@@ -68,8 +68,8 @@ You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab pra
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
-| S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S1`-`S4`) require doing this first** |
-| S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
+| S0 | [Set up the Raspberry Pi](S0_SetUpRaspberryPi/S0_SetUpRaspberryPi.ipynb) | **All lab practicals (`S1`-`S4`) require doing this first** |
+| S1 | [Pose Estimation](S1_PoseEstimation/S1_PoseEstimation.ipynb) | |
 | S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
 | S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
 | S4 | [EMG](S4_EMG/S4_EMG.ipynb) | |
@@ -81,7 +81,7 @@ These materials are extra notes/examples that parts of the course may refer to.
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
-| X0 | [Software Setup](X2_InstallSoftware/README.md) | Explains how the software used in the PBL course is setup |
+| X0 | [Software Setup](X0_SoftwareSetup/README.md) | Explains how the software used in the PBL course is setup |
 | X1 | [Writing CSV Files](X1_WritingCSVFiles/X1_WritingCSVFiles.ipynb) | Explains how to write CSV data to a file |
 | X2 | [Generating Timestamped Filenames](X2_GeneratingTimestampedFilenames/X2_GeneratingTimestampedFilenames.ipynb) | Explains how to generate timestamped filenames |
 
