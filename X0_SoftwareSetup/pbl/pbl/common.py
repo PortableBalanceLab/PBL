@@ -13,10 +13,11 @@ required_pi_interfaces = {
 }
 
 required_apt_packages = {
-    "git",          # for clone-ing examples etc.
-    "python3-pip",  # for installing python packages
-    "mu-editor",    # recommended to students for editing code
-    "thonny",       # recommended to students for editing code (alternative)
+    "git",                 # for clone-ing examples etc.
+    "python3-pip",         # for installing python packages
+    "mu-editor",           # recommended to students for editing code
+    "thonny",              # recommended to students for editing code (alternative)
+    "realvnc-vnc-server",  # so the Pi can host a VNC interface (#43 #44)
 }
 
 required_pip_packages = {
