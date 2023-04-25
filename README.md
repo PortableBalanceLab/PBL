@@ -13,7 +13,9 @@ To get started, follow these steps:
 
 1. **Download a Copy of this Repository**:
 
-    1. `git clone https://github.com/PortableBalanceLab/PBLstaging` (TODO: this should eventually become a download to a ZIP containing a particular version of the lab notes)
+    1. Go to the [releases](../../releases) page and download a `zip` of the latest release
+       (unless a specific version is specified)
+    2. Unzip the course content somewhere (e.g. on your `Desktop`)
 
 2. **Get Jupyter**:
 
@@ -66,8 +68,8 @@ You will be asigned one of four possible lab practicals (`S1`-`S4`). All lab pra
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
-| S0 | [Set up the Raspberry Pi](S1_SetUpRaspberryPi/S1_SetUpRaspberryPi.ipynb) | **All lab practicals (`S1`-`S4`) require doing this first** |
-| S1 | [Pose Estimation](S2_PoseEstimation/S2_PoseEstimation.ipynb) | |
+| S0 | [Set up the Raspberry Pi](S0_SetUpRaspberryPi/S0_SetUpRaspberryPi.ipynb) | **All lab practicals (`S1`-`S4`) require doing this first** |
+| S1 | [Pose Estimation](S1_PoseEstimation/S1_PoseEstimation.ipynb) | |
 | S2 | [IMU](S2_IMU/S2_IMU.ipynb) | |
 | S3 | [Force Plate](S3_ForcePlate/S3_ForcePlate.ipynb) | |
 | S4 | [EMG](S4_EMG/S4_EMG.ipynb) | |
@@ -79,7 +81,7 @@ These materials are extra notes/examples that parts of the course may refer to.
 
 | ID | Title | Notes |
 | -- | ----- | ----- |
-| X0 | [Software Setup](X2_InstallSoftware/README.md) | Explains how the software used in the PBL course is setup |
+| X0 | [Software Setup](X0_SoftwareSetup/README.md) | Explains how the software used in the PBL course is setup |
 | X1 | [Writing CSV Files](X1_WritingCSVFiles/X1_WritingCSVFiles.ipynb) | Explains how to write CSV data to a file |
 | X2 | [Generating Timestamped Filenames](X2_GeneratingTimestampedFilenames/X2_GeneratingTimestampedFilenames.ipynb) | Explains how to generate timestamped filenames |
 
@@ -92,11 +94,14 @@ This repository only contains core course materials. Schedules should be made av
 
 # Acknowledgements
 
-The PBL lab wouldn't be possible without organization and support from a bunch of people. Here's a list of some of them:
+The PBL lab wouldn't be possible without organization and support from a bunch of people. Here's an
+alphabetical list of some of them:
 
-- Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer
-- Jinne Geelen (@JinneGeelen, J.E.Geelen@tudelft.nl): Founding lab designer and implementer
-
-- Reinier van Antwerpen (R.vanAntwerpen@tudelft.nl): Hardware support (3D printing)
-- Jacques Brenkman (J.A.Brenkman@tudelft.nl): Hardware support (electronics and PCB design)
-- Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support
+- Reinier van Antwerpen (R.vanAntwerpen@tudelft.nl): Hardware support (3D printing), 2022 & 2023
+- Jacques Brenkman (J.A.Brenkman@tudelft.nl): Hardware support (electronics and PCB design), 2023
+- Jinne Geelen (@JinneGeelen, J.E.Geelen@tudelft.nl): Founding lab designer and implementer, 2022
+- Koen Jongbloed (k.j.p.jongbloed@outlook.com): Teaching Assistant, 2022; Hardware support, 2023
+- Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support and open-sourcing, 2022 & 2023
+- Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer, 2022 & 2023
+- Janne Luijten (@JanneLuijten, j.a.m.luijten@student.tudelft.nl): Teaching Assistant, 2023
+- Fred Roeling (f.q.c.roeling@tudelft.nl): IT and networking support, 2022 & 2023
