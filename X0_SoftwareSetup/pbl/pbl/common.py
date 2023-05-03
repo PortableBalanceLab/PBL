@@ -1,6 +1,6 @@
 # content here is common to all parts of the PBL course
 
-import importlib
+import importlib.util
 import shutil
 import subprocess
 import unittest
