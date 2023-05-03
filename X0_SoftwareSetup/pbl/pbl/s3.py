@@ -52,6 +52,13 @@ class Tests(unittest.TestCase):
 
     def test_can_import_hx711_multi(self):
         assert pbl.common.can_import("hx711_multi")
+    
+    def test_can_import_hx711_multi_hx711_module(self):
+        assert pbl.common.can_import("hx711_multi.hx711")
+    
+    def test_can_import_HX711_class(self):
+        assert pbl.common.module_has_attr("hx711_multi", "HX711")
+        assert pbl.common.module_has_attr("hx711_multi.hx711", "HX711")
 
     def test_hx711_multi_is_available_in_opt(self):
         assert os.path.exists("/opt/hx711-multi")
