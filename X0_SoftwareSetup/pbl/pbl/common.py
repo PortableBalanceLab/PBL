@@ -1,12 +1,9 @@
 # content here is common to all parts of the PBL course
 
-import pbl.common
-
 import importlib
 import shutil
 import subprocess
 import unittest
-
 
 required_pi_interfaces = {
     "vnc",          # (how students typically access the Pi)
