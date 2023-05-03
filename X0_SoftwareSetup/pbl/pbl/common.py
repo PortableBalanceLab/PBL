@@ -35,6 +35,12 @@ def print_dir_contents(path):
 def can_import(module_name_str):
     return importlib.util.find_spec(module_name_str) is not None
 
+def module_has_attr(module_name_str, attr_name):
+    spec = importlib.util.find_spec(module_name_str)
+    if spec:
+        module = spec.loader.load_module()
+        return hasattr(module, attr_name)
+
 # tests that check that the Pi has been setup correctly for L2
 class Tests(unittest.TestCase):
 
