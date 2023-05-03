@@ -43,23 +43,23 @@ def _enable_pi_interface(interface_name):
     print(f"enabled {interface_name}: was_enabled = {was_enabled}, is_enabled = {is_enabled}")
 
 # configures the Pi's hardware interfaces ready for PBL
-def configure_pi_interfaces():
+def configure_pi_interfaces(modules=pbl.all_modules):
     print("----- starting configuring pi interfaces -----")
-    for interface_name in _get_union_of_module_string_sets(pbl.all_modules, "required_pi_interfaces"):
+    for interface_name in _get_union_of_module_string_sets(modules, "required_pi_interfaces"):
         _enable_pi_interface(interface_name)
     print("----- finished configuring pi interfaces -----")
 
 # installs all APT dependencies used in PBL
-def install_apt_dependencies():
+def install_apt_dependencies(modules=pbl.all_modules):
     print("----- starting install apt dependencies -----")
-    deps = _get_union_of_module_string_sets(pbl.all_modules, "required_apt_packages")
+    deps = _get_union_of_module_string_sets(modules, "required_apt_packages")
     _printing_subprocess_run(["apt-get", "install", "-y", *deps], check=True)
     print("----- finished install apt dependencies -----")
 
 # installs all PIP dependencies used in PBL
-def install_pip_dependencies():
+def install_pip_dependencies(modules=pbl.all_modules):
     print("----- starting install pip dependencies -----")
-    deps = _get_union_of_module_string_sets(pbl.all_modules, "required_pip_packages")
+    deps = _get_union_of_module_string_sets(modules, "required_pip_packages")
     _printing_subprocess_run(["pip", "install", *deps])
     print("----- finished install pip dependencies -----")
 
@@ -74,21 +74,21 @@ def _try_run_custom_install_step(module):
         pass
 
 # tries to run all `on_custom_install` steps for all PBL course components
-def run_custom_install_steps():
-    for module in pbl.all_modules:
+def run_custom_install_steps(modules=pbl.all_modules):
+    for module in modules:
         _try_run_custom_install_step(module)
 
 # installs all software used by PBL course components
-def install_required_software():
+def install_required_software(modules=pbl.all_modules):
     print("----- starting installing required software")
-    install_apt_dependencies()
-    install_pip_dependencies()
-    run_custom_install_steps()
+    install_apt_dependencies(modules)
+    install_pip_dependencies(modules)
+    run_custom_install_steps(modules)
     print("----- finished installing required software")
 
 # configures + installs the Pi ready for PBL
-def install():
+def install(modules=pbl.all_modules):
     print("----- starting install of Pi for PBL -----")
-    configure_pi_interfaces()
-    install_required_software()
+    configure_pi_interfaces(modules)
+    install_required_software(modules)
     print("----- finished install of Pi for PBL: enjoy :> -----")
