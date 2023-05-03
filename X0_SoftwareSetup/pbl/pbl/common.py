@@ -50,10 +50,10 @@ class Tests(unittest.TestCase):
         assert subprocess.run(["raspi-config", "nonint", f"get_vnc"], check=True, capture_output=True, text=True).stdout.strip() == "0"
 
     def test_can_import_matplotlib(self):
-        assert pbl.common.can_import("matplotlib")
+        assert can_import("matplotlib")
 
     def test_can_import_numpy(self):
-        assert pbl.common.can_import("numpy")
+        assert can_import("numpy")
 
     def test_pip_available_on_command_line(self):
         assert shutil.which("pip") is not None
