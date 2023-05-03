@@ -36,7 +36,7 @@ def print_dir_contents(path):
     run_in_terminal(f"ls -la {path}")
 
 def can_import(module_name_str):
-    return importlib.util.find_spec("matplotlib") is not None
+    importlib.util.find_spec(module_name_str) is not None
 
 # tests that check that the Pi has been setup correctly for L2
 class Tests(unittest.TestCase):
