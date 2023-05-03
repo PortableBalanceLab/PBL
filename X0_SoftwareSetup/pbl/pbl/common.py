@@ -40,6 +40,8 @@ def module_has_attr(module_name_str, attr_name):
     if spec:
         module = spec.loader.load_module()
         return hasattr(module, attr_name)
+    else:
+        return False
 
 # tests that check that the Pi has been setup correctly for L2
 class Tests(unittest.TestCase):
