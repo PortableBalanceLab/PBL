@@ -53,14 +53,16 @@ def configure_pi_interfaces(modules=pbl.all_modules):
 def install_apt_dependencies(modules=pbl.all_modules):
     print("----- starting install apt dependencies -----")
     deps = _get_union_of_module_string_sets(modules, "required_apt_packages")
-    _printing_subprocess_run(["apt-get", "install", "-y", *deps], check=True)
+    if deps:
+        _printing_subprocess_run(["apt-get", "install", "-y", *deps], check=True)
     print("----- finished install apt dependencies -----")
 
 # installs all PIP dependencies used in PBL
 def install_pip_dependencies(modules=pbl.all_modules):
     print("----- starting install pip dependencies -----")
     deps = _get_union_of_module_string_sets(modules, "required_pip_packages")
-    _printing_subprocess_run(["pip", "install", *deps])
+    if deps:
+        _printing_subprocess_run(["pip", "install", *deps])
     print("----- finished install pip dependencies -----")
 
 # tries to run one `on_custom_install` step for one PBL course component (e.g. s1)
