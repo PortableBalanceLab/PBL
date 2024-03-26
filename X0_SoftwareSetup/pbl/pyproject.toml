@@ -1,0 +1,6 @@
+[project]
+name = "pbl"
+version = "1.0"
+
+[project.scripts]
+pbl = 'pbl.__main__:main'

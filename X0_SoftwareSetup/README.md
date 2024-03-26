@@ -127,6 +127,7 @@ enable VNC and i2c).
 
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
   - Connect to the Pi with: `ssh username@address`
+  - Create + configure a user-specific python virtual environment by running `create-pbl-venv.sh` from this dir
   - Run `sudo pip install --force-reinstall ./pbl` to install the `pbl` package you copied to the Pi system-wide
   - Run `sudo pbl install` to setup the Pi
   - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
