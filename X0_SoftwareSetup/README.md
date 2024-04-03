@@ -117,9 +117,11 @@ enable VNC and i2c).
 
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
   - Copy `pbl` to the Pi with: `scp -r pbl/ username@address:`
-
+  - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
+  - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
+  - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
     `hostname.local` - depending on how you configured your network.
-  - **Note 3**: the colon (`:`) at the end of `username@address:` is important
+  - **Note 4**: the colon (`:`) at the end of `username@address:` is important
 
 - Use `ssh` to install the `pbl` package onto the pi and then use `pbl install` to setup the pi:
   - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
@@ -128,10 +130,8 @@ enable VNC and i2c).
     - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
     - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
       `hostname.local` - depending on how you configured your network
-  - Download this repository onto the pi with `git clone https://github.com/PortableBalanceLab/PBL`
-  - Change to this directory with `cd PBL/X0_SoftwareSetup`
-  - Create + configure a user-specific python virtual environment by running `./create-pbl-venv.sh` from this dir
-  - Run `source ~/pbl-venv/bin/activate` to activate the virtual environment. It's activated if your command line begins with `(pbl-venv)`
+  - Download the PBL repository onto the pi with `git clone https://github.com/PortableBalanceLab/PBL`
+  - Change to the X0_SoftwareSetup directory with `cd PBL/X0_SoftwareSetup`
   - Run `sudo pip install --force-reinstall ./pbl` to install the `pbl` package to the virtual environment
   - Ensure `apt` is up to date with `sudo apt-get update`
   - Run `sudo pbl install` to setup the Pi (system-wide) and the virtual environment
