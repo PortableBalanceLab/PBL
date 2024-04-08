@@ -92,8 +92,8 @@ def install_required_software(modules=pbl.all_modules):
 def install(modules=pbl.all_modules, excluded_modules=[]):
 
     # ensure excluded modules are removed from the modules list
-    exclusion_set = {excluded_module for excluded_module in excluded_modules}
-    filtered_modules = [module for module in modules if module not in exclusion_set]
+    exclusion_set = {f"pbl.{excluded_module}" for excluded_module in excluded_modules}
+    filtered_modules = [module for module in modules if module.__name__ not in exclusion_set]
 
     # install stuff
     print("----- starting install of Pi for PBL -----")
