@@ -20,12 +20,12 @@ required_apt_packages = {
     "wget",        # for downloading example model/script assets
     "git",         # for `clone`ing coral example models etc.
     "python3-tk",  # used by `guizero` for rendering the GUI
+    "python3-tflite-runtime"  # used by the coral Edge TPU runtime (USB layer?)
 }
 
 required_pip_packages = {
     "guizero",         # used to build camera booth GUI
     "pillow",          # used for processing images (previously: called `python-imaging` in apt)
-    "tflite-runtime",  # used by the coral Edge TPU runtime (USB layer?)
 }
 
 PROJECT_POSENET_REPO="https://github.com/PortableBalanceLab/project-posenet"
