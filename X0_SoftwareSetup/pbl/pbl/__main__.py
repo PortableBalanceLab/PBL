@@ -37,6 +37,10 @@ def main():
     parser_test = subparsers.add_parser("test", help="run all unit tests")
     parser_test.set_defaults(command=lambda args: pbl.test.test())
 
+    # add 'hardware-test' command
+    parser_hwtest = subparsers.add_parser("hwtest", help="run all hardware tests")
+    parser_hwtest.set_defaults(command=lambda args: pbl.test.test_hardware())
+
     parsed = parser.parse_args()
     parsed.command(parsed)
 

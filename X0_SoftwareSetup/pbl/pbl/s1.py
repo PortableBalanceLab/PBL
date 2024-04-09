@@ -158,4 +158,16 @@ class Tests(unittest.TestCase):
     def test_posenet_has_expected_format(self):
         assert os.path.isfile("/opt/project-posenet/pose_camera.py")
 
-    # TODO: test posenet pose_camera.py can be ran etc. - it's a hardware test, though
+class HardwareTests(unittest.TestCase):
+
+    def test_can_show_webcam_footage(self):
+        # copy+paste of what the students do while setting up for s1
+        subprocess.run(["python3", "-m", "pbl.s1_test_webcam"], check=True)
+
+    def test_can_infer_macaw_using_tflite_software_backend(self):
+        # copy+paste of what the students do to check if tensorflow works without the coral thing
+        subprocess.run(["python3", "classify_image.py", "--model", "mobilenet_v2_1.0_224_inat_bird_quant.tflite", "--labels", "inat_bird_labels.txt", "--input", "parrot.jpg"], cwd="/opt/coral_example", check=True)
+
+    def test_can_infer_macaw_using_tflite_coral_backend(self):
+        # copy+paste of what the students do to check if tensorflow works with coral dongle
+        subprocess.run(["python3", "classify_image.py", "--model", "mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite", "--labels", "inat_bird_labels.txt", "--input", "parrot.jpg"], cwd="/opt/coral_example", check=True)
