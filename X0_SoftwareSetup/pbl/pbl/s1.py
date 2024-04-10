@@ -12,7 +12,7 @@ import urllib.request
 
 
 required_pi_interfaces = {
-    "camera",      # for capturing images via the hardware ribbon interface
+    "legacy",      # for capturing images via the hardware ribbon interface
 }
 
 required_apt_packages = {
