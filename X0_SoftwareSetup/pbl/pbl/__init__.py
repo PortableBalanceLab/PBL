@@ -11,3 +11,5 @@ all_modules = {pbl.common, pbl.l2, pbl.l3, pbl.s1, pbl.s2, pbl.s3, pbl.s4}
 
 # so that callers can just write `pbl.install(modules)`
 from pbl.install import install
+from pbl.test import test
+from pbl.test import hwtest
