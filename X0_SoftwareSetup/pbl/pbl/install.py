@@ -49,8 +49,21 @@ def configure_pi_interfaces(modules=pbl.all_modules):
         _enable_pi_interface(interface_name)
     print("----- finished configuring pi interfaces -----")
 
+# looks for an `on_before_apt` method on each module and calls it
+def _try_run_on_before_apt(module):
+    if hasattr(module, "on_before_apt"):
+        print(f"--- starting {module.__name__}.on_before_apt() ---")
+        getattr(module, "on_before_apt")()
+        print(f"--- finished {module.__name__}.on_before_apt() ---")
+    else:
+        # print(f"{module.__name__}: has no on_before_apt method: skipping")
+        pass
+
 # installs all APT dependencies used in PBL
 def install_apt_dependencies(modules=pbl.all_modules):
+    print("----- starting on_before_apt steps -----")
+    for module in modules:
+        _try_run_on_before_apt(module)
     print("----- starting install apt dependencies -----")
     deps = _get_union_of_module_string_sets(modules, "required_apt_packages")
     if deps:
@@ -90,7 +103,9 @@ def install_required_software(modules=pbl.all_modules):
 
 # configures + installs the Pi ready for PBL
 def install(modules=pbl.all_modules):
+    # install stuff
     print("----- starting install of Pi for PBL -----")
     configure_pi_interfaces(modules)
     install_required_software(modules)
     print("----- finished install of Pi for PBL: enjoy :> -----")
+

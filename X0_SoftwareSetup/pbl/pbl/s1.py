@@ -12,7 +12,7 @@ import urllib.request
 
 
 required_pi_interfaces = {
-    "camera",      # for capturing images via the hardware ribbon interface
+    "legacy",      # for capturing images via the hardware ribbon interface
 }
 
 required_apt_packages = {
@@ -20,37 +20,36 @@ required_apt_packages = {
     "wget",        # for downloading example model/script assets
     "git",         # for `clone`ing coral example models etc.
     "python3-tk",  # used by `guizero` for rendering the GUI
+
+    # these apt dependencies are from coral-edgetpu apt source
+    "python3-tflite-runtime",
+    "libedgetpu1-std",
+    "python3-pycoral",
 }
 
 required_pip_packages = {
     "guizero",         # used to build camera booth GUI
     "pillow",          # used for processing images (previously: called `python-imaging` in apt)
-    "tflite-runtime",  # used by the coral Edge TPU runtime (USB layer?)
 }
 
 PROJECT_POSENET_REPO="https://github.com/PortableBalanceLab/project-posenet"
 
-# performs custom install steps (i.e. steps that aren't just pi interfaces, or
-# installing off-the-shelf packages)
-def on_custom_install():
-    _install_coral_libraries()
-    _install_coral_example()
-    _install_posenet_code()
+# ensures coral-edgetpu-stable apt source is setup
+def on_before_apt():
+    # ensure coral-edgetpu-stable apt source is installed before
+    # apt-installing the necessary dependencies
+    #
+    # pulled from: https://coral.ai/docs/accelerator/get-started
 
-# downloads+installs all TPU runtime coral.ai libraries
-# needed to make the neural network camera work (for S1)
-#
-# pulled from: https://coral.ai/docs/accelerator/get-started
-def _install_coral_libraries():
-    print("starting installing coral libraries")
-
-    # install the Edge TPU runtime (USB layer)
     run_in_terminal('echo "deb https://packages.cloud.google.com/apt coral-edgetpu-stable main" | sudo tee /etc/apt/sources.list.d/coral-edgetpu.list')
     run_in_terminal('curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -')
     run_in_terminal('sudo apt update')
-    run_in_terminal('sudo apt install -y libedgetpu1-std python3-pycoral')
 
-    print("finished installing coral libraries")
+# performs custom install steps (i.e. steps that aren't just pi interfaces, or
+# installing off-the-shelf packages)
+def on_custom_install():
+    _install_coral_example()
+    _install_posenet_code()
 
 # installs extra coral test model data + script that shows
 # the students a basic classification example in S1
@@ -159,4 +158,16 @@ class Tests(unittest.TestCase):
     def test_posenet_has_expected_format(self):
         assert os.path.isfile("/opt/project-posenet/pose_camera.py")
 
-    # TODO: test posenet pose_camera.py can be ran etc. - it's a hardware test, though
+class HardwareTests(unittest.TestCase):
+
+    def test_can_show_webcam_footage(self):
+        # copy+paste of what the students do while setting up for s1
+        subprocess.run(["python3", "-m", "pbl.s1_test_webcam"], check=True)
+
+    def test_can_infer_macaw_using_tflite_software_backend(self):
+        # copy+paste of what the students do to check if tensorflow works without the coral thing
+        subprocess.run(["python3", "classify_image.py", "--model", "mobilenet_v2_1.0_224_inat_bird_quant.tflite", "--labels", "inat_bird_labels.txt", "--input", "parrot.jpg"], cwd="/opt/coral_example", check=True)
+
+    def test_can_infer_macaw_using_tflite_coral_backend(self):
+        # copy+paste of what the students do to check if tensorflow works with coral dongle
+        subprocess.run(["python3", "classify_image.py", "--model", "mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite", "--labels", "inat_bird_labels.txt", "--input", "parrot.jpg"], cwd="/opt/coral_example", check=True)
