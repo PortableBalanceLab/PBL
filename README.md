@@ -104,5 +104,5 @@ alphabetical list of some of them:
 - Koen Jongbloed (k.j.p.jongbloed@outlook.com): Teaching Assistant, 2022; Hardware support, 2023
 - Adam Kewley (@adamkewley, a.kewley@tudelft.nl): Software support and open-sourcing, 2022 & 2023
 - Eline van der Kruk (@evanderkruk, E.vanderKruk@tudelft.nl): Course lecturer, 2022 & 2023
-- Janne Luijten (@JanneLuijten, j.a.m.luijten@student.tudelft.nl): Teaching Assistant, 2023
+- Janne Luijten (@JanneLuijten, j.a.m.luijten@tudelft.nl): Teaching Assistant, 2022 & 2023 - Teacher, 2024
 - Fred Roeling (f.q.c.roeling@tudelft.nl): IT and networking support, 2022 & 2023
