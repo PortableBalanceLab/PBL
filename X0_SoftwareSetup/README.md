@@ -165,3 +165,7 @@ enable VNC and i2c).
  - See if it's mounted with `sudo lsblk`
  - Unmount it with `sudo umount /media/pbl/*`
  - Clone with `sudo rpi-clone -s HOSTNAME -v -f sda`
+ - Unmount
+ - Plug into "slave" pi
+ - Ssh into the pi
+ - Change password with `passwd`
