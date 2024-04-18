@@ -156,3 +156,12 @@ enable VNC and i2c).
   - Install VNC Viewer. The credentials for the Pi will be to use the same `address`, `username`,
     and `password` as you used for SSH
   - You may find that you need to reset the Pi after configuration for VNC to fully work
+
+ # Alternate Install (`rpi-clone`)
+
+ - Get `https://github.com/billw2/rpi-clone` (e.g. `cd $(mktemp -d) && git clone https://github.com/billw2/rpi-clone`)
+ - Install it with `cp rpi-clone rpi-clone-setup /usr/local/sbin`
+ - Put the SD card into the SD card reader
+ - See if it's mounted with `sudo lsblk`
+ - Unmount it with `sudo umount /media/pbl/*`
+ - Clone with `sudo rpi-clone -s HOSTNAME -v -f sda`
