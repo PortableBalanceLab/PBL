@@ -7,7 +7,7 @@
 This guide sets up a Raspberry Pi (Zero or 4) from scratch such that it's ready for use in the
 practical labs (content beginning with `S`).
 
-You will use the Raspberry Pi Imager software for this. Download it from: https://www.raspberrypi.com/software/
+You will use the Raspberry Pi Imager software for this. Download it from: https://www.raspberrypi.com/software/ . The raspberry pi image that's verified to work is https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/
 
 
 # Create a Spreadsheet for Tracking Pi Credentials/Information
