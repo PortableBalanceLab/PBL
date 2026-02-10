@@ -13,8 +13,8 @@ base_user=pbl
 base_password=thebasecase
 
 # Ensure existing filesystem is unmounted
-if [[ -e ${bootfs} ]]; then sudo umount ${bootfs}; fi
-if [[ -e ${rootfs} ]]; then sudo umount ${rootfs}; fi
+if [[ -e ${bootfs} ]]; then sudo umount ${bootfs} && sudo rmdir ${bootfs}; fi
+if [[ -e ${rootfs} ]]; then sudo umount ${rootfs} && sudo rmdir ${rootfs}; fi
 
 # Flash image to microSD card
 xz -dc ~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz | sudo dd of=${micro_sd} iflag=fullblock oflag=dsync bs=512K status=progress
@@ -30,6 +30,15 @@ sudo resize2fs ${micro_sd}2
 # Mount bootfs and rootfs filesystems
 sudo mkdir ${bootfs} && sudo mount ${micro_sd}1 ${bootfs}
 sudo mkdir ${rootfs} && sudo mount ${micro_sd}2 ${rootfs}
+
+if [[ ! -s "${bootfs}/config.txt" ]]; then
+    echo "${bootfs}/config.txt: is missing or empty, has the boot drive been mounted correctly?" 1>&2
+    exit 1
+fi
+if [[ ! -s "${bootfs}/cmdline.txt" ]]; then
+    echo "${bootfs}/cmdline.txt: is missing or empty, has the boot drive been mounted correctly?" 1>&2
+    exit 1
+fi
 
 # Configure dual-mode (gadget-mode) USB driver
 sudo bash -c "echo dtoverlay=dwc2 >> ${bootfs}/config.txt"
@@ -85,7 +94,7 @@ sudo ln -s /etc/systemd/service/firstboot-networkd.service ${rootfs}/etc/systemd
 
 # Copy the PBL project to `/opt/PBL` so that all source code is immediately
 # available on the Pi (e.g. to reference it, to install the software, etc.)
-sudo rsync -av --exclude=".git" ../ ${rootfs}/opt/PBL/
+sudo rsync -av --exclude=".git" --exclude=".idea" ../ ${rootfs}/opt/PBL/
 sudo chown -R root:root ${rootfs}/opt/PBL/
 
 # Unmount
