@@ -91,8 +91,6 @@ it doesn't have to be separately downloaded.
   to flash and program the microSD card.
 - Once the card is flashed, you can safely remove the card.
 
-**TODO**: ensure the flashing script copies `PBL` to `/opt`
-
 
 ## Step 3: Configure the base image
 
@@ -112,11 +110,8 @@ do this because some steps require booting the OS.
 # Change into the PBL/ directory installed by flash-pi-os-to-microsd.sh
 cd /opt/PBL/X0_SoftwareSetup/
 
-# Install PBL's dependencies
+# Install dependencies and `pbl`
 ./scripts/setup_pi.sh
-
-# Install `pbl` python module
-sudo pip install ./pbl
 
 # Run `pbl` test suite - all should pass
 pbl test

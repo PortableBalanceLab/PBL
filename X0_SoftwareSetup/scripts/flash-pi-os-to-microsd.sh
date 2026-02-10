@@ -21,6 +21,12 @@ xz -dc ~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz | sudo dd of=${micro
 sudo sync
 sudo partprobe ${micro_sd} # Ensure flashed partitions are visible
 
+# Resize rootfs partition so that it has enough space for PBL
+sudo parted ${micro_sd} resizepart 2 6GB
+# Resize rootfs filesystem to fill the expanded partition
+sudo e2fsck -f ${micro_sd}2
+sudo resize2fs ${micro_sd}2
+
 # Mount bootfs and rootfs filesystems
 sudo mkdir ${bootfs} && sudo mount ${micro_sd}1 ${bootfs}
 sudo mkdir ${rootfs} && sudo mount ${micro_sd}2 ${rootfs}
@@ -39,7 +45,8 @@ hashed_password=$(echo "${base_password}" | openssl passwd -6 -stdin)
 echo "pw == ${base_password}, hash = ${hashed_password}"
 echo "${base_user}:${hashed_password}" | sudo tee ${bootfs}/userconf.txt
 
-# Copying the SSH key comes after first login (MAC, password, hostname, etc.)
+# Note: copying any SSH keys etc. and individualization comes after configuring
+# the software.
 
 # Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
 # and figuring that out costed me two working days).
@@ -49,7 +56,8 @@ unmanaged-devices=interface-name:usb0
 EOF
 sudo chmod 600 ${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf
 
-# Instead, use systemd-networkd
+# Instead, have systemd-networkd manage the USB network connection (it's
+# much more reliable: trust me).
 sudo tee ${rootfs}/etc/systemd/network/usb0.network <<EOF
 [Match]
 Name=usb0
@@ -74,6 +82,11 @@ ExecStart=/bin/systemctl start systemd-networkd
 WantedBy=multi-user.target
 EOF
 sudo ln -s /etc/systemd/service/firstboot-networkd.service ${rootfs}/etc/systemd/system/multi-user.target.wants/firstboot-networkd.service
+
+# Copy the PBL project to `/opt/PBL` so that all source code is immediately
+# available on the Pi (e.g. to reference it, to install the software, etc.)
+sudo rsync -av --exclude=".git" ../ ${rootfs}/opt/PBL/
+sudo chown -R root:root ${rootfs}/opt/PBL/
 
 # Unmount
 sudo umount ${bootfs} && sudo rmdir ${bootfs}
