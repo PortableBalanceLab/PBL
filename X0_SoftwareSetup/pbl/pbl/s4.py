@@ -1,4 +1,4 @@
-# content here is specific to S4
+# `pbl.s4`: Code that's specific to PBL's sensor 4 (S4) lab.
 
 import pbl.common
 

@@ -1,3 +1,6 @@
+# `pbl.test`: runtime tests (e.g. to ensure the Raspberry Pi
+# has been set up correctly).
+
 import pbl
 
 import unittest

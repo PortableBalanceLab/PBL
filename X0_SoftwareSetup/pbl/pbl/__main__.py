@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-# command-line interface (CLI) for `pbl`
-#
-# this is ultimately what running `pbl {command}` in the terminal does
+# `__main__`: command-line interface for the `pbl` command
 
 import pbl
 

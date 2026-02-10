@@ -1,5 +1,5 @@
-# content here relates to setting up a (potentially, fresh) Raspberry Pi ready for
-# the PBL course
+# `pbl.install`: Top-level installation code that initially installs
+# and sets up a Raspberry Pi with all code for the PBL course.
 
 import pbl
 
@@ -108,4 +108,3 @@ def install(modules=pbl.all_modules):
     configure_pi_interfaces(modules)
     install_required_software(modules)
     print("----- finished install of Pi for PBL: enjoy :> -----")
-

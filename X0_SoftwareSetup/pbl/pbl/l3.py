@@ -1,4 +1,4 @@
-# content here is specific to L3
+# `pbl.l3`: Code that's specific to PBL's lecture 3 (L3).
 
 import pbl.common
 
@@ -13,7 +13,7 @@ required_pip_packages = {
     "gpiozero",    # used to blink and LED in the lecture
 }
 
-# tests that check that the Pi has been setup correctly for L3
+# tests that check that the Pi has been set up correctly for L3
 class Tests(unittest.TestCase):
 
     def test_can_import_guizero(self):

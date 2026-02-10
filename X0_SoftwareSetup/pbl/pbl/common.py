@@ -1,4 +1,5 @@
-# content here is common to all parts of the PBL course
+# `pbl.common`: Code that's common to all lectures/sensors in
+# the PBL course.
 
 import importlib.util
 import shutil

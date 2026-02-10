@@ -1,4 +1,4 @@
-# content here is specific to S2
+# `pbl.s2`: Code that's specific to PBL's sensor 2 (S2) lab.
 
 import pbl.common
 from pbl.common import run_in_terminal, print_dir_contents

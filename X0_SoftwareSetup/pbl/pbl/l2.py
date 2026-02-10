@@ -1,4 +1,4 @@
-# content here is specific to L1
+# `pbl.l2`: Code that's specific to PBL's lecture 2 (L2).
 
 import pbl.common
 
@@ -8,7 +8,7 @@ required_pip_packages = {
     "numpy",  # recommended to students in the lecture notes
 }
 
-# tests that check that the Pi has been setup correctly for L2
+# tests that check that the Pi has been set up correctly for L2
 class Tests(unittest.TestCase):
 
     def test_can_import_matplotlib(self):

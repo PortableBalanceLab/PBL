@@ -1,4 +1,4 @@
-# content here is specific to S1
+# `pbl.s1`: Code that's specific to PBL's sensor 1 (S1) lab.
 
 import pbl.common
 from pbl.common import run_in_terminal, print_dir_contents
@@ -9,7 +9,6 @@ import subprocess
 import tempfile
 import unittest
 import urllib.request
-
 
 required_pi_interfaces = {
     "legacy",      # for capturing images via the hardware ribbon interface

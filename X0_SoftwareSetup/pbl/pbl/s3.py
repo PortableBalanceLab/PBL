@@ -1,4 +1,4 @@
-# content here is specific to S3
+# `pbl.s3`: Code that's specific to PBL's sensor 3 (S3) lab.
 
 import pbl.common
 from pbl.common import run_in_terminal, print_dir_contents

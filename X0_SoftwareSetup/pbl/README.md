@@ -1,4 +1,4 @@
-# `pbl`: Support Code for the PortableBalanceLab Course
+# `pbl`: Core Source Code for the PortableBalanceLab Course
 
 > ℹ️ **Note**: If you're a student on the course, then you probably don't need to install
 > or use this code. It's provided here in case you're interested, or need to reinstall
