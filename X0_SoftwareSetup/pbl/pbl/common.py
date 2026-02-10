@@ -6,23 +6,6 @@ import shutil
 import subprocess
 import unittest
 
-required_pi_interfaces = {
-    "vnc",          # (how students typically access the Pi)
-}
-
-required_apt_packages = {
-    "git",                 # for clone-ing examples etc.
-    "python3-pip",         # for installing python packages
-    "mu-editor",           # recommended to students for editing code
-    "thonny",              # recommended to students for editing code (alternative)
-    "realvnc-vnc-server",  # so the Pi can host a VNC interface (#43 #44)
-}
-
-required_pip_packages = {
-    "matplotlib",   # suggested in L2 and used by many lectures/practicals
-    "numpy",        # suggested in L2 and may be recommended by TAs etc.
-}
-
 # run `cmd` as as-if running it in a terminal
 def run_in_terminal(cmd, cwd=None):
     print(f"running: {cmd}", flush=True)

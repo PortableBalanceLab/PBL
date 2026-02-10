@@ -4,15 +4,6 @@ import pbl.common
 
 import unittest
 
-required_apt_packages = {
-    "python3-tk",  # used by `guizero` for rendering the GUI
-}
-
-required_pip_packages = {
-    "guizero",     # used to build GUIs in the lecture
-    "gpiozero",    # used to blink and LED in the lecture
-}
-
 # tests that check that the Pi has been set up correctly for L3
 class Tests(unittest.TestCase):
 

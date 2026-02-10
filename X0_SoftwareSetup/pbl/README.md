@@ -4,18 +4,9 @@
 > or use this code. It's provided here in case you're interested, or need to reinstall
 > something.
 
-> 📕**tl;dr**: If you need to (re)install the `pbl` python code on a Raspberry Pi, then run
-> these commands in a terminal:
->
-> ```bash
-> cd $(mktemp -d)
-> git clone https://github.com/PortableBalanceLab/PBL
-> sudo pip install --force-reinstall ./PBL/X0_SoftwareSetup/pbl
-> ```
-
 This is a tiny python package that contains support code for the PortableBalanceLab
-course. It is designed to be installed on a fresh Raspberry Pi and then used to flash
-and check the Pi
+course. It is designed to be installed after installing all dependencies with
+`X0_SoftwareSetup/scripts/setup_pi.sh`.
 
 # Installation
 
@@ -28,3 +19,6 @@ pip install ./pbl
 # or, if you want to ensure you're installing the version you copied system-wide:
 sudo pip install --force-reinstall ./pbl
 ```
+
+**Note**: it assumes `X0_SoftwareSetup/scripts/setup_pi.sh` has already handled
+system-level dependencies.

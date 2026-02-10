@@ -22,4 +22,3 @@ def test(modules=pbl.all_modules):
 
 def hwtest(modules=pbl.all_modules):
     _run_tests(modules, suite_classname='HardwareTests')
-

@@ -4,10 +4,6 @@ import pbl.common
 
 import unittest
 
-required_pip_packages = {
-    "numpy",  # recommended to students in the lecture notes
-}
-
 # tests that check that the Pi has been set up correctly for L2
 class Tests(unittest.TestCase):
 
