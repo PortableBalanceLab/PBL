@@ -9,6 +9,7 @@ required_pip_dependencies=(
     "gpiozero"                        # L3: used to blink and LED in the lecture
     "guizero"                         # S1: used to build camera booth GUI
     "pillow"                          # S1: used for processing images (previously: called `python-imaging` in apt)
+    "svgwrite"                        # S1: transitive dependency for project-posenet
     "RPi.GPIO"                        # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B))
     "spidev"                          # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B))
     "smbus"                           # S2: dependency from SenseHAT (https://www.waveshare.com/wiki/Sense_HAT_(B)) (previously: called `python-smbus` in apt)

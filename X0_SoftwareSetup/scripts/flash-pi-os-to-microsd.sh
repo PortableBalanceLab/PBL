@@ -8,6 +8,8 @@ set -xeuo pipefail
 # Note: the version of Raspbian matters _a lot_ because some of the
 # hardware (primary, the CoralAI dongle) isn't supported on newer
 # OSes.
+#
+# This one is from: https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf.img.xz
 raspbian_img=~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
 micro_sd=/dev/sdb
 mnt=/media/adam
@@ -15,6 +17,16 @@ bootfs=${mnt}/boot
 rootfs=${mnt}/rootfs
 base_user=pbl
 base_password=thebasecase
+root_password=therootcause
+
+# Ensure the chosen block device isn't massive. If it's >100 GB then
+# there's a chance the caller has accidently specified their SSD or
+# something
+micro_sd_size=$(lsblk "${micro_sd}" --bytes --nodeps --noheadings --output SIZE)
+if [[ ${micro_sd_size} -gt 100000000000 ]]; then
+    echo "${micro_sd}: seems very big - are you SURE it's the microSD card (remove this check if you're sure)"
+    exit 1
+fi
 
 # Ensure existing filesystem is unmounted
 sudo umount --quiet ${micro_sd}1 || true
@@ -63,10 +75,25 @@ sudo sed -i 's/rootwait/rootwait modules-load=dwc2,g_ether/' ${bootfs}/cmdline.t
 # Configure ssh to be enabled on first boot
 sudo touch ${bootfs}/ssh
 
+# Configure base user
+#
+# The base user is what the students use. It should ideally be non-sudo so
+# that students are less likely to brick their Raspberry Pi.
+hashed_base_password=$(echo "${base_password}" | openssl passwd -6 -stdin)
+echo "pw == ${base_password}, hash = ${hashed_base_password}"
+echo "${base_user}:${hashed_base_password}" | sudo tee ${bootfs}/userconf.txt
+
 # Configure root user
-hashed_password=$(echo "${base_password}" | openssl passwd -6 -stdin)
-echo "pw == ${base_password}, hash = ${hashed_password}"
-echo "${base_user}:${hashed_password}" | sudo tee ${bootfs}/userconf.txt
+#
+# The root user is what the administrators may use to configure the device. It
+# is the same for all devices, but shouldn't be shared around.
+#
+# Note: the root user can't directly SSH onto the device. You must first SSH
+# as the base user and then `su` to root. This is to prevent everyone having
+# SSH access to everyone else's Pi.
+hashed_root_password=$(echo "${root_password}" | openssl passwd -6 -stdin)
+echo "root pw == ${root_password}, hash = ${hashed_root_password}"
+sudo sed -i "s|^root:[^:]*|root:${hashed_root_password}|" ${rootfs}/etc/shadow
 
 # Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
 # and figuring that out costed me two working days).

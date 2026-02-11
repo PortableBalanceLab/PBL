@@ -8,10 +8,10 @@ This guide sets up a Raspberry Pi (Zero or 4) from scratch such that it's ready 
 
 ## Hardware Prerequisites
 
-- A Linux computer with a Micro SD card reader, to run the `flash-pi-os-to-microsd.sh` script. If
+- A Linux computer with a Micro SD card reader. This "host" computer runs `flash-pi-os-to-microsd.sh` script. If
   you don't have a Linux computer handy, you can use a spare Raspberry Pi flashed with a base
   Raspbian image. You can install the base image using the Raspberry Pi imager, https://www.raspberrypi.com/software/,
-  which you should be able to install onto your Windows/macOS laptop.
+  which you should be able to install onto your Windows/macOS laptop - it will yield a Linux computer (a Pi).
 - An Raspbian OS image. Specifically, `2022-09-22-raspios-bullseye-armhf.img.xz` which is verified
   to work with PBL's hardware. Get it from https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/
 - A way of running stuff on the Pi after it's flashed:
@@ -59,7 +59,7 @@ The reason this information is collected is purely administrative:
   other information.
 
 
-## Step 1: Make Sure There Isn't a Base Image Lying Around Somewhere Already
+## Step 1: Sanity Check: We Might Already Have a Base Image
 
 **Before you start going through an arduous flashing/configuration process, ask whether there's a
 base image lying around somewhere. They're usually over-provisioned for the course.**
@@ -79,8 +79,8 @@ This step flashes a Raspbian OS image onto a microSD card and then pre-configure
 known credentials, LAN-over-USB, and copies the top-level PBL directory onto the Pi so that
 it doesn't have to be separately downloaded.
 
-- All the following steps should be conducted from a Linux host machine. It doesn't need
-  to be a Raspberry Pi (e.g. I do it from an AMD desktop computer with Ubuntu 24).
+- All the following steps should be conducted from a Linux host machine. The host machine
+  doesn't need to be a Raspberry Pi (e.g. I do it from an AMD desktop computer with Ubuntu 24).
 - Plug the microSD card into your microSD card reader and note down its device assignment
   and mount point. You can use `lsblk` to do this. For example, in my case, my micro SD card
   reader mounts `/dev/sdb` to `/media/adam` (if there's something on it).
@@ -107,29 +107,67 @@ do this because some steps require booting the OS.
 ```bash
 #!/usr/bin/env bash
 
-# Change into the PBL/ directory installed by flash-pi-os-to-microsd.sh
+# Change into the PBL/ directory that was installed
+# by the `flash-pi-os-to-microsd.sh` script.
 cd /opt/PBL/X0_SoftwareSetup/
 
 # Install dependencies and `pbl`
 ./scripts/setup_pi.sh
-
-# Run `pbl` test suite - all should pass
-pbl test
 ```
 
-## Step 4: Manually Validate and Clone the Base Image (if desired)
+## Step 4: Validate and Clone the Base Image (if desired)
 
 After completing step 3, the microSD card is fully configured, but not yet individualized
 (unique password/hostname). This is the best time to verify that the distribution behaves
 as expected and freeze it for mass cloning.
 
-To clone a microSD card, use `dd` on Linux/macOS to write it to an `.img` file and then
-compress that (e.g. with `.xz`). Alternatively, use a hardware microSD duplicator.
+```bash
+#!/usr/bin/env bash
 
+# E.g. to validate the install, run the `pbl` test suite - all tests should pass
+pbl test
+
+# ... but also remember to do some manual/exploratory testing...
+```
+
+### Cloning Method: Hardware microSD Duplicator
+
+Hardware duplicators are available for purchase. E.g. EZ DUPE 1 on 15, UReach microSD
+Duplicator tower 1-23. Robotics departments in TU Delft might already own something
+like these. Check with groups that need to flash many robots (e.g. drone research).
+
+Hardware duplicators are by far the fastest way to bulk-copy microSD cards: they're also
+the most expensive :wink:, so it's best to try and find one that's already purchased and
+beg a little.
+
+### Cloning Method: `rpi-clone`
+
+This performs a filesystem-level clone from one Pi to an SD card reader. Because it copies
+files, rather than blindly copying blocks, it is usually faster than `dd`, but it requires
+a Pi host.
+
+- Get `https://github.com/billw2/rpi-clone` (e.g. `cd $(mktemp -d) && git clone https://github.com/billw2/rpi-clone`)
+- Install it with `cp rpi-clone rpi-clone-setup /usr/local/sbin`
+- Put the SD card into the SD card reader
+- See if it's mounted with `sudo lsblk`
+- Unmount it with `sudo umount /media/pbl/*`
+- Clone with `sudo rpi-clone -s HOSTNAME -v -f sda`
+- Unmount
+- Plug into "slave" pi
+- Ssh into the pi
+- Change password with `passwd`
+
+### Cloning Method: `dd`
+
+This performs a block-level clone of a microSD card, which will copy all data on the card -
+including any junk that isn't actually part of the filesystem. Therefore, it's slower than
+copying the file (inodes), but can be done from any macOS/Linux machine and guarantees a
+byte-level clone.
 
 ## Step 5: Individualize a microSD Card to a Pi
 
 This step individualizes the image, which makes it unique for a particular group/box.
+Therefore, this process should be repeated for all boxes.
 
 All microSD cards are essentially identical to each other - apart from their hostname and
 password. The hostname is important because institutional networks tend to use it when
@@ -137,112 +175,27 @@ listing devices connected to networks (e.g. `TUD-Facility` portal does this). Th
 is important because it reduces the chance of a student connecting to another group's Pi
 by accident.
 
-To individualize a Pi, run TODO on the Pi. It will prompt for a hostname and password, which
-need to be manually typed in.
+To individualize a Pi, use the `individualize-pi.sh` script that's installed on the Pi
+during flashing:
 
-**Add the `hostname` and `password` to the organizational spreadsheet**.
+```bash
+#!/usr/bin/env bash
 
-## Step 2: Install 
+# Change into the PBL/ directory that was installed
+# by the `flash-pi-os-to-microsd.sh` script.
+cd /opt/PBL/X0_SoftwareSetup/
 
-These steps setup the Pi's microSD card with the necessary OS and bootup configuration (notably: the
-correct WiFi credentials, hostname, SSH, username, and password).
+# Switch to root account (requires root password)
+su -
 
-- Use the Raspberry Pi Imager software to flash Raspbian onto the Pi's microSD card. Click the settings
-  gear to change the installation configuration:
+# Call the script, providing the new username/password
+./scripts/individualize-pi.sh new_hostname new_password
 
-  - Assign a unique `hostname` derived from the physical ID. For example, if the physical ID is `A` then the hostname
-    should probably be something like `pblhosta`.
-  - **Add the `hostname` to the spreadsheet**. The hostname is useful in various networking-related
-    activities (e.g. it will be listed in your hotspot).
-  - Enable SSH and use password authentication
-  - Use a `username` of `pbl` for SSH authentication
-  - Assign a unique `password` for each Pi. The password should be a basic easy-to-write one. For example,
-    from a child's password generator or similar.
-  - **Add the `password` to the spreadsheet**. The password is **required** for configuring/using the
-    Pi. Do not mix this one up.
-  - Configure wireless LAN to use the appropriate (e.g. bootstrap) WiFi network. The SSID of the
-    network is usually related to the physical ID (e.g. if the physical ID is `A` then the wifi
-    SSID should probably be `pblwifia`). The WiFi password should match the `password` of each pi.
-  - Set locale/region to `Netherlands`
-  - Set keyboard layout to `us`
+# Note: `sudo` is now disabled for this Pi. From now on, you need to
+# `su -` to the `root` account to modify the Pi.
 
-- Write the configured OS to the microSD card
-- Eject the card so that it's ready to be inserted into the Raspberry Pi
+# Note: also, make sure to note down the Pi's WiFi adaptor MAC address
+ip link show wlan0 | grep -Po 'ether \K[^ ]*'
+```
 
-
-# Boot up the Raspberry Pi
-
-Once the microSD card has been flashed with the "base" Raspberry Pi OS, it must be booted up so
-that further configuration steps can be performed via SSH.
-
-- Eject the micro SD card, plug it into the pi, power up the pi
-- The pi should automatically connect to your WiFi network. Your hotspot/router software should
-  identify that the Pi has connected.
-- Use the IP/name listed in your hotspot/router software during the SSH configuration step.
-- If you can't figure out the IP address of the Pi, you might have to cross your fingers and
-  hope `hostname.local` works. Some routers will use the `hostname` you set to provide a temporary
-  domain name for your device on the network.
-
-
-# Configure the Pi via SSH
-
-With the "base" Raspberry Pi OS installed, and with it logged onto a (probably, hotspot) network, you
-can now use SSH to configure the Raspberry Pi with PBL-specific software and configuration options (e.g.
-enable VNC and i2c).
-
-- Use `scp` to copy the `pbl` subdirectory in `X0_SoftwareSetup` onto the Pi:
-
-  - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
-  - Copy `pbl` to the Pi with: `scp -r pbl/ username@address:`
-  - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
-  - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
-  - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
-    `hostname.local` - depending on how you configured your network.
-  - **Note 4**: the colon (`:`) at the end of `username@address:` is important
-
-- Use `ssh` to install the `pbl` package onto the pi and then use `pbl install` to setup the pi:
-  - Open a terminal (e.g. Windows Powershell, Mac Terminal, Linux GNOME terminal)
-  - Connect to the Pi with: `ssh username@address`
-    - **Note 1**: `username` was set when you flashed the device. It's usually `pbl`.
-    - **Note 2**: `password` was set when you flashed the device. It should've been written down in the spreadsheet.
-    - **Note 3**: `address` can be the IP address (via your hotspot software), `hostname` (e.g. `pbl1`), or
-      `hostname.local` - depending on how you configured your network
-  - Download the PBL repository onto the pi with `git clone https://github.com/PortableBalanceLab/PBL`
-  - Change to the X0_SoftwareSetup directory with `cd PBL/X0_SoftwareSetup`
-  - Run `sudo pip install --force-reinstall ./pbl` to install the `pbl` package to the virtual environment
-  - Ensure `apt` is up to date with `sudo apt-get update`
-  - Run `sudo pbl install` to setup the Pi (system-wide) and the virtual environment
-
-- via SSH, get the Pi's MAC address (if your hotspot software doesn't provide it):
-
-  - Use this command: `ip link show wlan0 | grep -Po 'ether \K[^ ]*'`
-  - **Add the `MAC` to the spreadsheet**. The MAC address is required for registering a device
-    on managed (e.g. university) networks.
-
-> **At this point, the Pi is fully configured** 🥳
->
-> You can now clone this base "PBL" image and flash it to all Pis. **However**, you should reconfigure
-> the cloned images appropriately with a unique `hostname`, user `password`, and (if necessary) SSID.
-> Otherwise, all Pis will appear to be exactly the same from a network/organizational PoV.
-
-
-# Test the Pi
-
-- You should be able to connect to the Pi via VNC:
-
-  - Install VNC Viewer. The credentials for the Pi will be to use the same `address`, `username`,
-    and `password` as you used for SSH
-  - You may find that you need to reset the Pi after configuration for VNC to fully work
-
- # Alternate Install (`rpi-clone`)
-
- - Get `https://github.com/billw2/rpi-clone` (e.g. `cd $(mktemp -d) && git clone https://github.com/billw2/rpi-clone`)
- - Install it with `cp rpi-clone rpi-clone-setup /usr/local/sbin`
- - Put the SD card into the SD card reader
- - See if it's mounted with `sudo lsblk`
- - Unmount it with `sudo umount /media/pbl/*`
- - Clone with `sudo rpi-clone -s HOSTNAME -v -f sda`
- - Unmount
- - Plug into "slave" pi
- - Ssh into the pi
- - Change password with `passwd`
+**Add the `new_hostname`, `new_password`, and MAC address to the organizational spreadsheet**.

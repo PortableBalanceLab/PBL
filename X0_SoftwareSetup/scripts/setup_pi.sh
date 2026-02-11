@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This is a top-level script that runs each setup step one-at-a-time
+# in-order.
+
 set -xeuo pipefail
 
 echo "----- starting install of PBL dependencies -----"
