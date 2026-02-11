@@ -194,8 +194,9 @@ su -
 # Note: `sudo` is now disabled for this Pi. From now on, you need to
 # `su -` to the `root` account to modify the Pi.
 
-# Note: also, make sure to note down the Pi's WiFi adaptor MAC address
-ip link show wlan0 | grep -Po 'ether \K[^ ]*'
+# Note: also, make sure to note down the Pi's WiFi adaptor MAC address,
+# and so on.
+# ip link show wlan0 | grep -Po 'ether \K[^ ]*'
 ```
 
 **Add the `new_hostname`, `new_password`, and MAC address to the organizational spreadsheet**.
