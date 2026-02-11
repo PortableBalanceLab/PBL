@@ -5,32 +5,46 @@
 
 set -xeuo pipefail
 
+# Note: the version of Raspbian matters _a lot_ because some of the
+# hardware (primary, the CoralAI dongle) isn't supported on newer
+# OSes.
+raspbian_img=~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
 micro_sd=/dev/sdb
 mnt=/media/adam
-bootfs=${mnt}/bootfs
+bootfs=${mnt}/boot
 rootfs=${mnt}/rootfs
 base_user=pbl
 base_password=thebasecase
 
 # Ensure existing filesystem is unmounted
-if [[ -e ${bootfs} ]]; then sudo umount ${bootfs} && sudo rmdir ${bootfs}; fi
-if [[ -e ${rootfs} ]]; then sudo umount ${rootfs} && sudo rmdir ${rootfs}; fi
+sudo umount --quiet ${micro_sd}1 || true
+sudo umount --quiet ${micro_sd}2 || true
+
+# Ensure mount points are cleared (they're remade after)
+if [[ -d "${bootfs}" ]]; then sudo rmdir "${bootfs}"; fi
+if [[ -d "${rootfs}" ]]; then sudo rmdir "${rootfs}"; fi
 
 # Flash image to microSD card
-xz -dc ~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz | sudo dd of=${micro_sd} iflag=fullblock oflag=dsync bs=512K status=progress
+#
+# Note: the block size and syncing flags are important to reduce
+# microSD flakiness issues.
+xz -dc ${raspbian_img} | sudo dd of=${micro_sd} iflag=fullblock oflag=dsync bs=512K status=progress
 sudo sync
 sudo partprobe ${micro_sd} # Ensure flashed partitions are visible
 
-# Resize rootfs partition so that it has enough space for PBL
+# Resize rootfs partition so that it has enough space for PBL source code
 sudo parted ${micro_sd} resizepart 2 6GB
-# Resize rootfs filesystem to fill the expanded partition
-sudo e2fsck -f ${micro_sd}2
-sudo resize2fs ${micro_sd}2
+sudo e2fsck -f ${micro_sd}2  # Check filesystem (required by resize2fs)
+sudo resize2fs ${micro_sd}2  # Resize rootfs filesystem to fill the expanded partition
 
 # Mount bootfs and rootfs filesystems
 sudo mkdir ${bootfs} && sudo mount ${micro_sd}1 ${bootfs}
 sudo mkdir ${rootfs} && sudo mount ${micro_sd}2 ${rootfs}
 
+# Sanity-check that the boot files aren't empty
+#
+# This is necessary because mis-mounted microSD filesystems can sometimes
+# contain files that exist (by name) but are empty.
 if [[ ! -s "${bootfs}/config.txt" ]]; then
     echo "${bootfs}/config.txt: is missing or empty, has the boot drive been mounted correctly?" 1>&2
     exit 1
@@ -46,16 +60,13 @@ sudo bash -c "echo dtoverlay=dwc2 >> ${bootfs}/config.txt"
 # Configure ethernet over the dual-mode USB driver
 sudo sed -i 's/rootwait/rootwait modules-load=dwc2,g_ether/' ${bootfs}/cmdline.txt
 
-# Enable ssh
+# Configure ssh to be enabled on first boot
 sudo touch ${bootfs}/ssh
 
 # Configure root user
 hashed_password=$(echo "${base_password}" | openssl passwd -6 -stdin)
 echo "pw == ${base_password}, hash = ${hashed_password}"
 echo "${base_user}:${hashed_password}" | sudo tee ${bootfs}/userconf.txt
-
-# Note: copying any SSH keys etc. and individualization comes after configuring
-# the software.
 
 # Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
 # and figuring that out costed me two working days).
@@ -101,3 +112,4 @@ sudo chown -R root:root ${rootfs}/opt/PBL/
 sudo umount ${bootfs} && sudo rmdir ${bootfs}
 sleep 2
 sudo umount ${rootfs} && sudo rmdir ${rootfs}
+sync
