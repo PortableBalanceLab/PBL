@@ -95,6 +95,23 @@ hashed_root_password=$(echo "${root_password}" | openssl passwd -6 -stdin)
 echo "root pw == ${root_password}, hash = ${hashed_root_password}"
 sudo sed -i "s|^root:[^:]*|root:${hashed_root_password}|" ${rootfs}/etc/shadow
 
+# Configure TUD-Facility WiFi Network
+#
+# This is the default WiFi network that the Pi will try to join when it's turned
+# on. NOTE: it may not be able to connect straight away, because TUD-Facility
+# requires that the Raspberry Pi's MAC address has been registered with the
+# network via https://infra-ict.tudelft.nl/portal/labs/list_labs.php
+sudo tee ${bootfs}/wpa_supplicant.conf <<EOF
+country=NL
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="TUD-facility"
+    psk="0b62dc191344e"
+}
+EOF
+
 # Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
 # and figuring that out costed me two working days).
 sudo tee ${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf <<EOF
