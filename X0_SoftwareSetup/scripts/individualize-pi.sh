@@ -62,4 +62,3 @@ echo "      access, won't take effect until you restart.    "
 echo "Note #2: you may also want to note down the ID, WiFi  "
 echo "         SSID, and WiFi password of the Pi, if you    "
 echo "         know them.                                   "
-

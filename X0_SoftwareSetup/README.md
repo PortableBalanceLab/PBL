@@ -115,6 +115,12 @@ cd /opt/PBL/X0_SoftwareSetup/
 ./scripts/setup_pi.sh
 ```
 
+> **Sidenote**: it's also possible to use an emulator (QEMU) for quick configuration
+> tasks from the host machine.
+>
+> See `scripts/run-via-qemu.sh` for an example
+
+
 ## Step 4: Validate and Clone the Base Image (if desired)
 
 After completing step 3, the microSD card is fully configured, but not yet individualized
