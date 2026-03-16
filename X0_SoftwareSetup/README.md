@@ -252,7 +252,23 @@ rm wipefile
 - Then unmount the root filesystem (or power off the Pi) and create an image of the SD card:
 
 ```bash
-dd if=/dev/sdb of=2026_PBL.img bs=4M
+dd if=/dev/sdb of=PBL.img bs=4M
+```
+
+- Then use `pishrink.sh` (packaged here, under `PiShrink/pishrink.sh`) to shrink the image to
+  a smaller size:
+
+```bash
+./PiShrink/pishrink.sh -v -n -Z PBL.img PBL_shrunk.img.xz
+```
+
+- The resulting image (`PBL_shrunk.img.xz`) is then small enough for long-term storage, etc.
+- To flash the image onto an SD card, use dd:
+
+```bash
+xz -dc PBL_shrunk.img.xz | sudo dd of=/dev/sdb iflag=fullblock oflag=dsync bs=512K status=progress
+sudo sync
+sudo partprobe /dev/sdb # Ensure flashed partitions are visible
 ```
 
 ## Step 5: Individualize a microSD Card to a Pi
