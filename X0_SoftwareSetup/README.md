@@ -229,12 +229,31 @@ a Pi host.
 - Ssh into the pi
 - Change password with `passwd`
 
-### Cloning Method: `dd`
+### Cloning Method: Zero Pi SD, `dd`, `PiShrink`
 
-This performs a block-level clone of a microSD card, which will copy all data on the card -
-including any junk that isn't actually part of the filesystem. Therefore, it's slower than
-copying the file (inodes), but can be done from any macOS/Linux machine and guarantees a
-byte-level clone.
+This performs a block-level clone of a microSD card, which may copy junk blocks data on the card.
+Therefore, it's potentially slower than copying file (e.g. with `rpi-clone`), but the simplicity
+of using a binary `.img` is that you can flash from any macOS/Linux machine and you will create
+an identical byte-for-byte clone.
+
+- First, zero out any remaining space on the Pi's SD card:
+
+```bash
+#!/usr/bin/env bash
+
+# Create a zeroed `wipefile` that fills all available space on the
+# Pi's root partition (compressibility)
+dd if=/dev/zero of=/root/of/rasberry/pi/wipefile bs=1M
+
+# Remove it (it's done its job of zeroing the unused space)
+rm wipefile
+```
+
+- Then unmount the root filesystem (or power off the Pi) and create an image of the SD card:
+
+```bash
+dd if=/dev/sdb of=2026_PBL.img bs=4M
+```
 
 ## Step 5: Individualize a microSD Card to a Pi
 
