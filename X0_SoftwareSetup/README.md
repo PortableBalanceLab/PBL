@@ -19,11 +19,77 @@ This guide sets up a Raspberry Pi (Zero or 4) from scratch such that it's ready 
     card into a Raspberry Pi and then use a USB cable from your computer to the Pi to create a network
     connection. Always plug Micro-USB cords into the USB slot on Pi Zeros. You must also tell your OS to
     "share my internet connection through this adaptor" after it recognizes the USB device as an ethernet
-    adaptor.
+    adaptor. Commands like `ip neigh` help figure out the shared Pi's IP address.
   - You can also just connect a mouse+keyboard+monitor to the Pi and manually configure it to join
     a network. Use a local WiFi hotspot if necessary.
   - However you connect to the Pi, it must have an internet connection in order to install software
     onto the flashed image.
+
+
+### Post-Flashing Connection Example
+
+Here is a concrete example of how an Ubuntu 24 host machine can be configured to share its internet
+connection via USB, so that connecting the host machine to the Pi with a USB-to-microUSB cable (in
+the Pi's USB port) will cause it to acquire its IP from the host machine. The host machine can then
+SSH into the Pi through the shared connection:
+
+```bash
+#!/usr/bin/env bash
+
+# Create a NetworkManager system connection profile on the host machine
+# that matches the interface `enx*` (the interface name the Pi gets
+# when it is plugged into the host machine) and assigns it a connection
+# called `RaspberryPi`. The connection shares the host's internet
+# connection.
+sudo tee /etc/NetworkManager/system-connections/pi.nmconnection <<EOF
+[connection]
+id=RaspberryPi
+uuid=73335555-1234-4567-89ab-cdef12345678
+type=ethernet
+autoconnect=true
+autoconnect-priority=100
+
+[ethernet]
+# Match the Raspberry Pi by interface name
+match-device=interface-name:enx*
+
+# Alternatively, you can match the Pi with the driver name. Check
+# the driver after plugging in the Pi with:
+#
+#     nmcli -f GENERAL.DRIVER device show <device_name>
+#
+# Where `<device_name>` is from `ip link`.
+#
+# Most Pis use 'cdc_ether', but some adapters use 'r8152'. You can then
+# use this as a match-device filter, like so:
+# match-device=interface-name:enx*;driver:r8152
+
+[ipv4]
+method=shared
+
+[ipv6]
+method=ignore
+EOF
+
+# NetworkManager requires that `.nmconnection` files have these permissions
+sudo chmod 600 /etc/NetworkManager/system-connections/pi.nmconnection
+
+# Tell NetworkManager to reload the connection
+sudo nmcli connection reload
+
+# Turn it on
+sudo nmcli connection up "RaspberryPi"
+
+# Other useful NetworkManager commands:
+#     sudo nmcli dev                            # list all network devices
+#     sudo nmcli conn                           # shorthand for `nmcli connection`
+#     sudo nmcli conn del "Wired connection 1"  # delete a connection
+# Debugging:
+#     sudo journalctl -u NetorkManager -r       # show logs for network manager (e.g. debug .nmconnection files)
+# Connecting:
+#     ip neigh                                  # list all neighbouring IP addresses (incl. Pi's USB)
+#     ssh pbl@IP_ADDR                           # SSH into Pi via ip address from the above
+```
 
 
 ## Organizational Prerequisites
