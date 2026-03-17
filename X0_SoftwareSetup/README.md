@@ -288,12 +288,12 @@ during flashing:
 ```bash
 #!/usr/bin/env bash
 
+# Switch to root account (requires root password)
+su -
+
 # Change into the PBL/ directory that was installed
 # by the `flash-pi-os-to-microsd.sh` script.
 cd /opt/PBL/X0_SoftwareSetup/
-
-# Switch to root account (requires root password)
-su -
 
 # Call the script, providing the new username/password
 ./scripts/individualize-pi.sh new_hostname new_password
