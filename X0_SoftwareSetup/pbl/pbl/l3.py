@@ -13,5 +13,5 @@ class Tests(unittest.TestCase):
     def test_can_import_IPython_display(self):
         assert pbl.common.can_import("IPython.display")
 
-    def test_can_import_gpiozero(self):
-        assert pbl.common.can_import("gpiozero")
+    def test_can_import_rpi_gpio(self):
+        assert pbl.common.can_import("RPi.GPIO")
