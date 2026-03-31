@@ -3,9 +3,9 @@
 set -xeuo pipefail
 
 required_interfaces=(
-    "i2c"     # S4:     hardware interface used by the lab (might also be used by S2 - legacy?)
-    "legacy"  # S1:     for capturing images via the hardware ribbon interface
     "vnc"     # Common: how users typically access the Pi
+    "legacy"  # S1:     for capturing images via the hardware camera ribbon interface
+    "i2c"     # S2/S4:  hardware interface used by the sensors
 )
 
 needs_reboot=false
