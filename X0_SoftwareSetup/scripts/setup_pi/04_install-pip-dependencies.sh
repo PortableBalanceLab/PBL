@@ -7,6 +7,7 @@ required_pip_dependencies=(
     "matplotlib"                      # L2:     recommended to students in the lecture notes
     "numpy"                           # L2:     recommended to students in the lecture notes
 
+    "RPi.GPIO"                        # L3:     mentioned as the primary way of controlling GPIO pins on a Pi
     "guizero"                         # L3:     used to build GUIs in the lecture
 
     "guizero"                         # S1:     used to build camera booth GUI

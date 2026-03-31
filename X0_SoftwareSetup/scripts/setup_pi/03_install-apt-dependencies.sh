@@ -7,8 +7,11 @@ required_apt_dependencies=(
     "python3-pip"                 # Common: for installing python packages
     "mu-editor"                   # Common: recommended to students for editing code
     "thonny"                      # Common: recommended to students for editing code (alternative)
+    "neovim"                      # Common: recommended for 1337 h4x0rs
     "realvnc-vnc-server"          # Common: so the Pi can host a VNC interface (#43 #44) (will be replaced with wayvnc in bookworm)
+
     "python3-tk"                  # L3:     used by `guizero`
+
     "curl"                        # S1:     for fetching GPG keys
     "wget"                        # S1:     for downloading example model/script assets
     "python3-tk"                  # S1:     used by `guizero` to create the booth UI
@@ -22,6 +25,7 @@ required_apt_dependencies=(
     "gir1.2-gtk-3.0"              # S1:     transitive dependency for project-posenet
     "python3-numpy"               # S1:     transitive dependency for project-posenet
     "python3-rpi.gpio"            # S1:     transitive dependency for project-posenet
+
     "automake"                    # S3:     for `autoconf` (for building hx711-multi)
     "build-essential"             # S3:     ensures there's a C/C++ toolchain available (for building hx711-multi)
 )
