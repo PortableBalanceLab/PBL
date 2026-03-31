@@ -22,8 +22,6 @@ required_apt_dependencies=(
     "gir1.2-gtk-3.0"              # S1:     transitive dependency for project-posenet
     "python3-numpy"               # S1:     transitive dependency for project-posenet
     "python3-rpi.gpio"            # S1:     transitive dependency for project-posenet
-    "automake"                    # S2:     for `autoconf` (for building bcm2835)
-    "build-essential"             # S2:     ensures there's a C/C++ toolchain available (for building bcm2835)
     "automake"                    # S3:     for `autoconf` (for building hx711-multi)
     "build-essential"             # S3:     ensures there's a C/C++ toolchain available (for building hx711-multi)
 )
