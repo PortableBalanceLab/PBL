@@ -16,6 +16,10 @@ class Tests(unittest.TestCase):
         assert os.path.exists("/opt/ICM20948.py")
         assert os.path.isfile("/opt/ICM20948.py")
 
+    def test_IMU_test_is_in_opt(self):
+        assert os.path.exists("/opt/IMU_test.py")
+        assert os.path.isfile("/opt/IMU_test.py")
+
     def test_can_import_matplotlib(self):
         assert pbl.common.can_import("matplotlib")
 

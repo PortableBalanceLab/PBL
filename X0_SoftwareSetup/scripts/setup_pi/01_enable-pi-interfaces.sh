@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# This is an optional additional setup script that __must__ be ran
+# from the Pi (cannot run this in an emulator - it talks to the kernel
+# module API).
+#
+# These setup steps are normally performed when flashing the Pi (with
+# 01_flash-pi-is-to-microsd.sh), but are provided here in case that
+# configuration went horribly wrong.
+
 set -xeuo pipefail
 
 required_interfaces=(
@@ -25,5 +33,3 @@ done
 if [ "$needs_reboot" = true ]; then
     echo "!!! Hardware changes detected. A reboot is required to apply settings. !!!"
 fi
-
-echo "----- finished configuring pi interfaces -----"

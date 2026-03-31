@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-# This should be ran from a host machine (e.g. a desktop computer with
-# and SD card reader).
+# This script flashes a microSD card with the necessary Raspberry Pi OS,
+# configuration, and software for the PortableBalanceLab course.
+#
+# It should be ran from a host/flashing machine, which is assumed to be
+# a Linux desktop computer with an SD card reader. You should read the
+# variables below and ensure they're correct for your machine!
 
 set -xeuo pipefail
 
@@ -42,16 +46,16 @@ if [[ -d "${rootfs}" ]]; then sudo rmdir "${rootfs}"; fi
 # microSD flakiness issues.
 xz -dc ${raspbian_img} | sudo dd of=${micro_sd} iflag=fullblock oflag=dsync bs=512K status=progress
 sudo sync
-sudo partprobe ${micro_sd} # Ensure flashed partitions are visible
+sudo partprobe "${micro_sd}"  # Ensure flashed partitions are visible
 
 # Resize rootfs partition so that it has enough space for PBL source code
-sudo parted ${micro_sd} resizepart 2 6GB
-sudo e2fsck -f ${micro_sd}2  # Check filesystem (required by resize2fs)
-sudo resize2fs ${micro_sd}2  # Resize rootfs filesystem to fill the expanded partition
+sudo parted "${micro_sd}" resizepart 2 6GB
+sudo e2fsck -f "${micro_sd}2"  # Check filesystem (required by resize2fs)
+sudo resize2fs "${micro_sd}2"  # Resize rootfs filesystem to fill the expanded partition
 
 # Mount bootfs and rootfs filesystems
-sudo mkdir ${bootfs} && sudo mount ${micro_sd}1 ${bootfs}
-sudo mkdir ${rootfs} && sudo mount ${micro_sd}2 ${rootfs}
+sudo mkdir "${bootfs}" && sudo mount "${micro_sd}1" "${bootfs}"
+sudo mkdir "${rootfs}" && sudo mount "${micro_sd}2" "${rootfs}"
 
 # Sanity-check that the boot files aren't empty
 #
@@ -67,13 +71,31 @@ if [[ ! -s "${bootfs}/cmdline.txt" ]]; then
 fi
 
 # Configure dual-mode (gadget-mode) USB driver
-sudo bash -c "echo dtoverlay=dwc2 >> ${bootfs}/config.txt"
+echo "dtoverlay=dwc2" | sudo tee -a "${bootfs}/config.txt"
 
 # Configure ethernet over the dual-mode USB driver
-sudo sed -i 's/rootwait/rootwait modules-load=dwc2,g_ether/' ${bootfs}/cmdline.txt
+sudo sed -i 's/rootwait/rootwait modules-load=dwc2,g_ether/' "${bootfs}/cmdline.txt"
 
 # Configure ssh to be enabled on first boot
-sudo touch ${bootfs}/ssh
+sudo touch "${bootfs}/ssh"
+
+# Configure vnc to be enabled on first boot
+sudo touch "${bootfs}/vnc"
+
+# Enable camera (ribbon, spi) interface and kernel module on first boot (S1)
+#
+# This is equivalent to running `sudo raspi-config nonint do_legacy 0`
+sudo sed -i 's/^start_x=0/start_x=1/' "${bootfs}/config.txt" || echo "start_x=1" | sudo tee -a "${bootfs}/config.txt"
+echo "gpu_mem=64" | sudo tee -a "${bootfs}/config.txt"
+if ! grep -q "bcm2835-v4l2" "${rootfs}/etc/modules"; then
+    echo "bcm2835-v4l2" | sudo tee -a "${rootfs}/etc/modules"
+fi
+
+# Enable i2c hardware interface on boot (S2/S4)
+#
+# This is equivalent to running `sudo raspi-config nonint do_i2c 0` (see `enable-pi-drivers.sh`)
+echo "dtparam=i2c_arm=on" | sudo tee -a "${bootfs}/config.txt"
+echo "i2c-dev" | sudo tee -a "${rootfs}/etc/modules"
 
 # Configure base user
 #
@@ -101,7 +123,7 @@ sudo sed -i "s|^root:[^:]*|root:${hashed_root_password}|" ${rootfs}/etc/shadow
 # on. NOTE: it may not be able to connect straight away, because TUD-Facility
 # requires that the Raspberry Pi's MAC address has been registered with the
 # network via https://infra-ict.tudelft.nl/portal/labs/list_labs.php
-sudo tee ${bootfs}/wpa_supplicant.conf <<EOF
+sudo tee "${bootfs}/wpa_supplicant.conf" <<EOF
 country=NL
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -114,15 +136,15 @@ EOF
 
 # Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
 # and figuring that out costed me two working days).
-sudo tee ${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf <<EOF
+sudo tee "${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf" <<EOF
 [keyfile]
 unmanaged-devices=interface-name:usb0
 EOF
-sudo chmod 600 ${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf
+sudo chmod 600 "${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf"
 
 # Instead, have systemd-networkd manage the USB network connection (it's
 # much more reliable: trust me).
-sudo tee ${rootfs}/etc/systemd/network/usb0.network <<EOF
+sudo tee "${rootfs}/etc/systemd/network/usb0.network" <<EOF
 [Match]
 Name=usb0
 
@@ -131,7 +153,7 @@ DHCP=yes
 EOF
 
 # Create a oneshot service on first boot to enable systemd-networkd
-sudo tee ${rootfs}/etc/systemd/system/firstboot-networkd.service <<'EOF'
+sudo tee "${rootfs}/etc/systemd/system/firstboot-networkd.service" <<'EOF'
 [Unit]
 Description=Enable systemd-networkd on first boot
 ConditionFirstBoot=yes
@@ -145,15 +167,26 @@ ExecStart=/bin/systemctl start systemd-networkd
 [Install]
 WantedBy=multi-user.target
 EOF
-sudo ln -s /etc/systemd/service/firstboot-networkd.service ${rootfs}/etc/systemd/system/multi-user.target.wants/firstboot-networkd.service
+sudo ln -s "/etc/systemd/service/firstboot-networkd.service" "${rootfs}/etc/systemd/system/multi-user.target.wants/firstboot-networkd.service"
 
 # Copy the PBL project to `/opt/PBL` so that all source code is immediately
 # available on the Pi (e.g. to reference it, to install the software, etc.)
-sudo rsync -av --exclude=".git" --exclude=".idea" ../ ${rootfs}/opt/PBL/
-sudo chown -R root:root ${rootfs}/opt/PBL/
+sudo rsync -av --exclude=".git" --exclude=".idea" ../ "${rootfs}/opt/PBL/"
+sudo chown -R root:root "${rootfs}/opt/PBL/"
 
-# Unmount
-sudo umount ${bootfs} && sudo rmdir ${bootfs}
-sleep 2
-sudo umount ${rootfs} && sudo rmdir ${rootfs}
+# Copy `qemu-armhf-static` into the root filesystem so that QEMU-based emulators
+# can boot into the Raspberry Pi.
+sudo cp -a "/usr/bin/qemu-armhf-static" "${rootfs}/usr/bin/"
+
+# Use a container + QEMU emulator to hop into the Raspberry Pi's filesystem and
+# then run the Pi's setup scripts.
+sudo systemd-nspawn \
+    -D "${rootfs}" \
+    --hostname="raspberrypi" \
+    --bind="${bootfs}:/boot" \
+    /bin/bash -c "cd /opt/PBL/X0_SoftwareSetup && ./scripts/02_setup_pi.sh"
+
+# Flashing complete - unmount flashed partitions
+sudo umount -l "${bootfs}" && sudo rmdir "${bootfs}"
+sudo umount -l "${rootfs}" && sudo rmdir "${rootfs}"
 sync

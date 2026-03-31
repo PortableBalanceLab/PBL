@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-# This script individualizes the Pi for a particular box/group
+# This script individualizes the Pi for a particular box/group/lab
+# and disables `sudo` access, so that students aren't as likely to
+# brick their Pis.
 
 set -xeuo pipefail
 

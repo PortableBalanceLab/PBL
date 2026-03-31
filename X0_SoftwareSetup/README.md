@@ -2,20 +2,20 @@
 
 > ℹ️ **Note**: If you're a student on the course, then you probably don't need to **do** anything
 > on this page. The organizers have probably already installed the necessary software for you. This 
-> page is provided for your information.
+> page is only provided for your information.
 
 This guide sets up a Raspberry Pi (Zero or 4) from scratch such that it's ready for use in the course.
 
 ## Hardware Prerequisites
 
-- A Linux computer with a Micro SD card reader. This "host" computer runs `flash-pi-os-to-microsd.sh` script. If
+- A Linux computer with a Micro SD card reader. This "host" computer runs `01_flash-pi-os-to-microsd.sh` script. If
   you don't have a Linux computer handy, you can use a spare Raspberry Pi flashed with a base
   Raspbian image. You can install the base image using the Raspberry Pi imager, https://www.raspberrypi.com/software/,
   which you should be able to install onto your Windows/macOS laptop - it will yield a Linux computer (a Pi).
 - An Raspbian OS image. Specifically, `2022-09-22-raspios-bullseye-armhf.img.xz` which is verified
   to work with PBL's hardware. Get it from https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/
 - A way of running stuff on the Pi after it's flashed:
-  - `flash-pi-os-to-microsd.sh` enables LAN-over-USB. After flashing, you can put the microSD
+  - `01_flash-pi-os-to-microsd.sh` enables LAN-over-USB. After flashing, you can put the microSD
     card into a Raspberry Pi and then use a USB cable from your computer to the Pi to create a network
     connection. Always plug Micro-USB cords into the USB slot on Pi Zeros. You must also tell your OS to
     "share my internet connection through this adaptor" after it recognizes the USB device as an ethernet
@@ -150,7 +150,7 @@ it doesn't have to be separately downloaded.
 - Plug the microSD card into your microSD card reader and note down its device assignment
   and mount point. You can use `lsblk` to do this. For example, in my case, my micro SD card
   reader mounts `/dev/sdb` to `/media/adam` (if there's something on it).
-- **Carefully read** `scripts/flash-pi-os-to-microsd.sh` and edit it according to how your
+- **Carefully read** `scripts/01_flash-pi-os-to-microsd.sh` and edit it according to how your
   computer mounts things. **BEWARE**: IT'S EXTREMELY DANGEROUS IF YOU SCREW THIS UP AND
   ACCIDENTLY GIVE IT YOUR ROOT FILESYSTEM - IT WILL NUKE YOUR COMPUTER. YOU WILL CRY.
 - Once you're confident that the script is safe to run, run it. It will take a few minutes
@@ -161,7 +161,7 @@ it doesn't have to be separately downloaded.
 ## Step 3: Configure the base image
 
 This step boots up the Raspbian OS image on a lab Raspberry Pi and then configures it with
-the necessary PBL-specific software. The `flash-pi-os-to-microsd.sh` script in step 2 doesn't
+the necessary PBL-specific software. The `01_flash-pi-os-to-microsd.sh` script in step 2 doesn't
 do this because some steps require booting the OS.
 
 - Put the flashed microSD card from step 2 into a Raspberry Pi. I typically put it into a
@@ -174,11 +174,11 @@ do this because some steps require booting the OS.
 #!/usr/bin/env bash
 
 # Change into the PBL/ directory that was installed
-# by the `flash-pi-os-to-microsd.sh` script.
+# by the `01_flash-pi-os-to-microsd.sh` script.
 cd /opt/PBL/X0_SoftwareSetup/
 
 # Install dependencies and `pbl`
-./scripts/setup_pi.sh
+./scripts/02_setup_pi.sh
 ```
 
 > **Sidenote**: it's also possible to use an emulator (QEMU) for quick configuration
@@ -282,7 +282,7 @@ listing devices connected to networks (e.g. `TUD-Facility` portal does this). Th
 is important because it reduces the chance of a student connecting to another group's Pi
 by accident.
 
-To individualize a Pi, use the `individualize-pi.sh` script that's installed on the Pi
+To individualize a Pi, use the `03_individualize-pi.sh` script that's installed on the Pi
 during flashing:
 
 ```bash
@@ -292,11 +292,11 @@ during flashing:
 su -
 
 # Change into the PBL/ directory that was installed
-# by the `flash-pi-os-to-microsd.sh` script.
+# by the `01_flash-pi-os-to-microsd.sh` script.
 cd /opt/PBL/X0_SoftwareSetup/
 
 # Call the script, providing the new username/password
-./scripts/individualize-pi.sh new_hostname new_password
+./scripts/03_individualize-pi.sh new_hostname new_password
 
 # Note: `sudo` is now disabled for this Pi. From now on, you need to
 # `su -` to the `root` account to modify the Pi.

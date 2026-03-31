@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 # This is a top-level script that runs each setup step one-at-a-time
-# in-order.
+# in-order. It is ran from the Pi (or an emulator) after the OS root
+# and boot filesystems are configured.
 
 set -xeuo pipefail
 

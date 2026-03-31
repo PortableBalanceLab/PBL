@@ -46,6 +46,9 @@ class Tests(unittest.TestCase):
     def test_posenet_has_expected_format(self):
         assert os.path.isfile("/opt/project-posenet/pose_camera.py")
 
+    def test_bcm2835_v4l2_kernelmod_loaded(self):
+        assert pbl.common.is_kernelmod_loaded("bcm2835_v4l2"), "bcm2835_v4l2 not loaded - might cause issues with the camera later on"
+
 class HardwareTests(unittest.TestCase):
 
     def test_can_show_webcam_footage(self):

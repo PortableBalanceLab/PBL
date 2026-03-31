@@ -27,6 +27,13 @@ def module_has_attr(module_name_str, attr_name):
     else:
         return False
 
+def is_kernelmod_loaded(module_name):
+    with open("/proc/modules", "rt") as f:
+        for line in f:
+            if line.split()[0] == module_name:
+                return True
+    return False
+
 # tests that check that the Pi has been setup correctly for L2
 class Tests(unittest.TestCase):
 
