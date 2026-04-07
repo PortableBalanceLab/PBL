@@ -13,4 +13,3 @@ sudo pip3 install /opt/hx711-multi/
 echo "----- finished hx711-multi installation -----"
 
 ls -la /opt/hx711-multi  # Debugging
-

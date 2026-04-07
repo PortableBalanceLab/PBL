@@ -17,6 +17,8 @@ required_apt_dependencies=(
     "qemu-user-static"   # Emulation: QEMU emulator
     "binfmt-support"     # Emulation: Emulation suppport in Linux
     "systemd-container"  # Emulation: Create root jails with `systemd-nspawn`
+
+    "python3-serial"     # UART: automating a serial connection to flash the pi etc.
 )
 
 echo "----- starting install apt dependencies -----"

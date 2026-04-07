@@ -70,11 +70,8 @@ if [[ ! -s "${bootfs}/cmdline.txt" ]]; then
     exit 1
 fi
 
-# Configure dual-mode (gadget-mode) USB driver
-echo "dtoverlay=dwc2" | sudo tee -a "${bootfs}/config.txt"
-
-# Configure ethernet over the dual-mode USB driver
-sudo sed -i 's/rootwait/rootwait modules-load=dwc2,g_ether/' "${bootfs}/cmdline.txt"
+# Configure UART (serial, GPIO) connection support
+echo "enable_uart=1" | sudo tee -a "${bootfs}/config.txt"
 
 # Configure ssh to be enabled on first boot
 sudo touch "${bootfs}/ssh"
@@ -133,41 +130,6 @@ network={
     psk="0b62dc191344e"
 }
 EOF
-
-# Make NetworkManager __NOT__ manage the USB connection (it fucking sucks
-# and figuring that out costed me two working days).
-sudo tee "${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf" <<EOF
-[keyfile]
-unmanaged-devices=interface-name:usb0
-EOF
-sudo chmod 600 "${rootfs}/etc/NetworkManager/conf.d/usb0-unmanaged.conf"
-
-# Instead, have systemd-networkd manage the USB network connection (it's
-# much more reliable: trust me).
-sudo tee "${rootfs}/etc/systemd/network/usb0.network" <<EOF
-[Match]
-Name=usb0
-
-[Network]
-DHCP=yes
-EOF
-
-# Create a oneshot service on first boot to enable systemd-networkd
-sudo tee "${rootfs}/etc/systemd/system/firstboot-networkd.service" <<'EOF'
-[Unit]
-Description=Enable systemd-networkd on first boot
-ConditionFirstBoot=yes
-After=basic.target
-
-[Service]
-Type=oneshot
-ExecStart=/bin/systemctl enable systemd-networkd
-ExecStart=/bin/systemctl start systemd-networkd
-
-[Install]
-WantedBy=multi-user.target
-EOF
-sudo ln -s "/etc/systemd/service/firstboot-networkd.service" "${rootfs}/etc/systemd/system/multi-user.target.wants/firstboot-networkd.service"
 
 # Copy the PBL project to `/opt/PBL` so that all source code is immediately
 # available on the Pi (e.g. to reference it, to install the software, etc.)
