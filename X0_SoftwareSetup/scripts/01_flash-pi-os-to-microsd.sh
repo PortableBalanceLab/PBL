@@ -14,7 +14,7 @@ set -xeuo pipefail
 # OSes.
 #
 # This one is from: https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf.img.xz
-raspbian_img=~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
+raspbian_img=~/Desktop/2022-09-22-raspios-bullseye-armhf.img.xz
 micro_sd=/dev/sdb
 mnt=/media/adam
 bootfs=${mnt}/boot
@@ -23,9 +23,17 @@ base_user=pbl
 base_password=thebasecase
 root_password=therootcause
 
+# Ensure the chosen block device is a USB device, just to reduce the
+# chance of accidently flashing the caller's root filesystem or home
+# drive (it can happen!)
+if ! udevadm info --query property --name "${micro_sd}" | grep -q '^ID_BUS=usb$'; then
+    echo "${micro_sd}: does not appear to be a USB device - are you SURE it's the microSD card (remove this check if you're sure)"
+    exit 1
+fi
+
 # Ensure the chosen block device isn't massive. If it's >100 GB then
-# there's a chance the caller has accidently specified their SSD or
-# something
+# there's a chance the caller has accidently specified a large USB
+# hard drive or something
 micro_sd_size=$(lsblk "${micro_sd}" --bytes --nodeps --noheadings --output SIZE)
 if [[ ${micro_sd_size} -gt 100000000000 ]]; then
     echo "${micro_sd}: seems very big - are you SURE it's the microSD card (remove this check if you're sure)"
