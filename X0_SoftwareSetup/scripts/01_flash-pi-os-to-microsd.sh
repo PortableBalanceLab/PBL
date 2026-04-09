@@ -14,8 +14,8 @@ set -xeuo pipefail
 # OSes.
 #
 # This one is from: https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf.img.xz
-raspbian_img=~/Desktop/2022-09-22-raspios-bullseye-armhf.img.xz
-micro_sd=/dev/sdb
+raspbian_img=~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
+micro_sd=/dev/sda
 mnt=/media/adam
 bootfs=${mnt}/boot
 rootfs=${mnt}/rootfs
@@ -79,13 +79,26 @@ if [[ ! -s "${bootfs}/cmdline.txt" ]]; then
 fi
 
 # Configure UART (serial, GPIO) connection support
+#
+# This enables accessing a bash prompt for the Pi before it has
+# network access.
 echo "enable_uart=1" | sudo tee -a "${bootfs}/config.txt"
 
 # Configure ssh to be enabled on first boot
 sudo touch "${bootfs}/ssh"
 
-# Configure vnc to be enabled on first boot
-sudo touch "${bootfs}/vnc"
+# Configure HDMI hotplugging etc. so that the Pi always has
+# a standard 1280x720 (hdmi_mode=16) screen available - even
+# when a monitor isn't plugged in. This is necessay for VNC,
+# which depends on the presence of a live-and-logged-in
+# desktop environment.
+#
+#     hdmi_force_hotplug=1  # enable hdmi output always
+#     hdmi_group=2          # set display type to a computer monitor
+#     hdmi_mode=16          # set display mode to 1280x720
+sudo sed -i 's/^#hdmi_force_hotplug=.*/hdmi_force_hotplug=1/' "${bootfs}/config.txt"
+sudo sed -i 's/^#hdmi_group=.*/hdmi_group=2/'                 "${bootfs}/config.txt"
+sudo sed -i 's/^#hdmi_mode=.*/hdmi_mode=16/'                  "${bootfs}/config.txt"
 
 # Enable camera (ribbon, spi) interface and kernel module on first boot (S1)
 #

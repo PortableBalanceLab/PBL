@@ -30,6 +30,11 @@ for interface in "${required_interfaces[@]}"; do
     fi
 done
 
+# Additionally, ensure the VNC resolution is set to something, so that
+# virtual VNC sessions have a known resolution (might not be necessary
+# if hdmi_force_hotplug=1 in /boot/config.txt, but worth doing anyway).
+sudo raspi-config nonint do_vnc_resolution 1280x720
+
 if [ "$needs_reboot" = true ]; then
     echo "!!! Hardware changes detected. A reboot is required to apply settings. !!!"
 fi
