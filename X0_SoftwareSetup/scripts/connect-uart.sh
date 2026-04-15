@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 
-sudo tio --flow none --baud 115200 /dev/ttyUSB0
+# Join `dialout` if there's a permissions error here
+tio --flow none --baud 115200 /dev/ttyUSB0
 
