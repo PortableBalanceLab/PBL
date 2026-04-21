@@ -14,7 +14,7 @@ set -xeuo pipefail
 # OSes.
 #
 # This one is from: https://downloads.raspberrypi.com/raspios_armhf/images/raspios_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf.img.xz
-raspbian_img=~/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
+raspbian_img=/home/adam/Downloads/2022-09-22-raspios-bullseye-armhf.img.xz
 micro_sd=/dev/sda
 mnt=/media/adam
 bootfs=${mnt}/boot
@@ -22,6 +22,12 @@ rootfs=${mnt}/rootfs
 base_user=pbl
 base_password=thebasecase
 root_password=therootcause
+
+# Ensure the user running this script is root (required)
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be ran with sudo or as root."
+    exit 1
+fi
 
 # Ensure the chosen block device is a USB device, just to reduce the
 # chance of accidently flashing the caller's root filesystem or home
@@ -41,29 +47,29 @@ if [[ ${micro_sd_size} -gt 100000000000 ]]; then
 fi
 
 # Ensure existing filesystem is unmounted
-sudo umount --quiet ${micro_sd}1 || true
-sudo umount --quiet ${micro_sd}2 || true
+umount --quiet "${micro_sd}1" || true
+umount --quiet "${micro_sd}2" || true
 
 # Ensure mount points are cleared (they're remade after)
-if [[ -d "${bootfs}" ]]; then sudo rmdir "${bootfs}"; fi
-if [[ -d "${rootfs}" ]]; then sudo rmdir "${rootfs}"; fi
+if [[ -d "${bootfs}" ]]; then rmdir "${bootfs}"; fi
+if [[ -d "${rootfs}" ]]; then rmdir "${rootfs}"; fi
 
 # Flash image to microSD card
 #
 # Note: the block size and syncing flags are important to reduce
 # microSD flakiness issues.
-xz -dc ${raspbian_img} | sudo dd of=${micro_sd} iflag=fullblock oflag=dsync bs=512K status=progress
-sudo sync
-sudo partprobe "${micro_sd}"  # Ensure flashed partitions are visible
+xz -dc "${raspbian_img}" | dd of="${micro_sd}" iflag=fullblock oflag=dsync bs=512K status=progress
+sync
+partprobe "${micro_sd}"  # Ensure flashed partitions are visible
 
 # Resize rootfs partition so that it has enough space for PBL source code
-sudo parted "${micro_sd}" resizepart 2 6GB
-sudo e2fsck -f "${micro_sd}2"  # Check filesystem (required by resize2fs)
-sudo resize2fs "${micro_sd}2"  # Resize rootfs filesystem to fill the expanded partition
+parted "${micro_sd}" resizepart 2 6GB
+e2fsck -f "${micro_sd}2"  # Check filesystem (required by resize2fs)
+resize2fs "${micro_sd}2"  # Resize rootfs filesystem to fill the expanded partition
 
 # Mount bootfs and rootfs filesystems
-sudo mkdir "${bootfs}" && sudo mount "${micro_sd}1" "${bootfs}"
-sudo mkdir "${rootfs}" && sudo mount "${micro_sd}2" "${rootfs}"
+mkdir "${bootfs}" && mount "${micro_sd}1" "${bootfs}"
+mkdir "${rootfs}" && mount "${micro_sd}2" "${rootfs}"
 
 # Sanity-check that the boot files aren't empty
 #
@@ -82,10 +88,10 @@ fi
 #
 # This enables accessing a bash prompt for the Pi before it has
 # network access.
-echo "enable_uart=1" | sudo tee -a "${bootfs}/config.txt"
+echo "enable_uart=1" >> "${bootfs}/config.txt"
 
 # Configure ssh to be enabled on first boot
-sudo touch "${bootfs}/ssh"
+touch "${bootfs}/ssh"
 
 # Configure HDMI hotplugging etc. so that the Pi always has
 # a standard 1280x720 (hdmi_mode=16) screen available - even
@@ -96,24 +102,24 @@ sudo touch "${bootfs}/ssh"
 #     hdmi_force_hotplug=1  # enable hdmi output always
 #     hdmi_group=2          # set display type to a computer monitor
 #     hdmi_mode=16          # set display mode to 1280x720
-sudo sed -i 's/^#hdmi_force_hotplug=.*/hdmi_force_hotplug=1/' "${bootfs}/config.txt"
-sudo sed -i 's/^#hdmi_group=.*/hdmi_group=2/'                 "${bootfs}/config.txt"
-sudo sed -i 's/^#hdmi_mode=.*/hdmi_mode=16/'                  "${bootfs}/config.txt"
+sed -i 's/^#hdmi_force_hotplug=.*/hdmi_force_hotplug=1/' "${bootfs}/config.txt"
+sed -i 's/^#hdmi_group=.*/hdmi_group=2/'                 "${bootfs}/config.txt"
+sed -i 's/^#hdmi_mode=.*/hdmi_mode=16/'                  "${bootfs}/config.txt"
 
 # Enable camera (ribbon, spi) interface and kernel module on first boot (S1)
 #
 # This is equivalent to running `sudo raspi-config nonint do_legacy 0`
-sudo sed -i 's/^start_x=0/start_x=1/' "${bootfs}/config.txt" || echo "start_x=1" | sudo tee -a "${bootfs}/config.txt"
-echo "gpu_mem=64" | sudo tee -a "${bootfs}/config.txt"
+sed -i 's/^start_x=0/start_x=1/' "${bootfs}/config.txt" || echo "start_x=1" | tee -a "${bootfs}/config.txt"
+echo "gpu_mem=64" >> "${bootfs}/config.txt"
 if ! grep -q "bcm2835-v4l2" "${rootfs}/etc/modules"; then
-    echo "bcm2835-v4l2" | sudo tee -a "${rootfs}/etc/modules"
+    echo "bcm2835-v4l2" >> "${rootfs}/etc/modules"
 fi
 
 # Enable i2c hardware interface on boot (S2/S4)
 #
 # This is equivalent to running `sudo raspi-config nonint do_i2c 0` (see `enable-pi-drivers.sh`)
-echo "dtparam=i2c_arm=on" | sudo tee -a "${bootfs}/config.txt"
-echo "i2c-dev" | sudo tee -a "${rootfs}/etc/modules"
+echo "dtparam=i2c_arm=on" >> "${bootfs}/config.txt"
+echo "i2c-dev"            >> "${rootfs}/etc/modules"
 
 # Configure base user
 #
@@ -121,7 +127,7 @@ echo "i2c-dev" | sudo tee -a "${rootfs}/etc/modules"
 # that students are less likely to brick their Raspberry Pi.
 hashed_base_password=$(echo "${base_password}" | openssl passwd -6 -stdin)
 echo "pw == ${base_password}, hash = ${hashed_base_password}"
-echo "${base_user}:${hashed_base_password}" | sudo tee ${bootfs}/userconf.txt
+echo "${base_user}:${hashed_base_password}" >> "${bootfs}/userconf.txt"
 
 # Configure root user
 #
@@ -133,7 +139,7 @@ echo "${base_user}:${hashed_base_password}" | sudo tee ${bootfs}/userconf.txt
 # SSH access to everyone else's Pi.
 hashed_root_password=$(echo "${root_password}" | openssl passwd -6 -stdin)
 echo "root pw == ${root_password}, hash = ${hashed_root_password}"
-sudo sed -i "s|^root:[^:]*|root:${hashed_root_password}|" ${rootfs}/etc/shadow
+sed -i "s|^root:[^:]*|root:${hashed_root_password}|" "${rootfs}/etc/shadow"
 
 # Configure TUD-Facility WiFi Network
 #
@@ -141,7 +147,7 @@ sudo sed -i "s|^root:[^:]*|root:${hashed_root_password}|" ${rootfs}/etc/shadow
 # on. NOTE: it may not be able to connect straight away, because TUD-Facility
 # requires that the Raspberry Pi's MAC address has been registered with the
 # network via https://infra-ict.tudelft.nl/portal/labs/list_labs.php
-sudo tee "${bootfs}/wpa_supplicant.conf" <<EOF
+tee "${bootfs}/wpa_supplicant.conf" <<EOF
 country=NL
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -154,22 +160,22 @@ EOF
 
 # Copy the PBL project to `/opt/PBL` so that all source code is immediately
 # available on the Pi (e.g. to reference it, to install the software, etc.)
-sudo rsync -av --exclude=".git" --exclude=".idea" ../ "${rootfs}/opt/PBL/"
-sudo chown -R root:root "${rootfs}/opt/PBL/"
+rsync -av --exclude=".git" --exclude=".idea" ../ "${rootfs}/opt/PBL/"
+chown -R root:root "${rootfs}/opt/PBL/"
 
 # Copy `qemu-armhf-static` into the root filesystem so that QEMU-based emulators
 # can boot into the Raspberry Pi.
-sudo cp -a "/usr/bin/qemu-armhf-static" "${rootfs}/usr/bin/"
+cp -a "/usr/bin/qemu-armhf-static" "${rootfs}/usr/bin/"
 
 # Use a container + QEMU emulator to hop into the Raspberry Pi's filesystem and
 # then run the Pi's setup scripts.
-sudo systemd-nspawn \
+systemd-nspawn \
     -D "${rootfs}" \
     --hostname="raspberrypi" \
     --bind="${bootfs}:/boot" \
     /bin/bash -c "cd /opt/PBL/X0_SoftwareSetup && ./scripts/02_setup_pi.sh"
 
 # Flashing complete - unmount flashed partitions
-sudo umount -l "${bootfs}" && sudo rmdir "${bootfs}"
-sudo umount -l "${rootfs}" && sudo rmdir "${rootfs}"
+umount -l "${bootfs}" && rmdir "${bootfs}"
+umount -l "${rootfs}" && rmdir "${rootfs}"
 sync
