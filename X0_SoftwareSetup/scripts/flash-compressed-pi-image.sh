@@ -20,5 +20,10 @@ if ! udevadm info --query property --name "${block_device}" | grep -q '^ID_BUS=u
     exit 1
 fi
 
+# Ensure all partitions of the target block device are unmounted
+# before flashing the image; otherwise, it can become corrupted
+# and unbootable.
+sudo umount ${block_device}[0-9] || true
+
 xz -dc "${image_file}" | sudo dd of=${block_device} iflag=fullblock oflag=dsync bs=512K status=progress
 sync
