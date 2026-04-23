@@ -46,9 +46,8 @@ if [[ ${micro_sd_size} -gt 100000000000 ]]; then
     exit 1
 fi
 
-# Ensure existing filesystem is unmounted
-umount --quiet "${micro_sd}1" || true
-umount --quiet "${micro_sd}2" || true
+# Ensure all partitions on the target block device are unmounted.
+umount --quiet "${micro_sd}[0-9]" "${micro_sd}p[0-9]" || true
 
 # Ensure mount points are cleared (they're remade after)
 if [[ -d "${bootfs}" ]]; then rmdir "${bootfs}"; fi
@@ -160,7 +159,13 @@ EOF
 
 # Copy the PBL project to `/opt/PBL` so that all source code is immediately
 # available on the Pi (e.g. to reference it, to install the software, etc.)
-rsync -av --exclude=".git" --exclude=".idea" ../ "${rootfs}/opt/PBL/"
+rsync -av \
+    --exclude=".git" \
+    --exclude=".idea" \
+    --exclude="X0_SoftwareSetup/PBL.img" \
+    --exclude="X0_SoftwareSetup/PBL_shrunk.img.xz" \
+    "${PWD}/../" \
+    "${rootfs}/opt/PBL/"
 chown -R root:root "${rootfs}/opt/PBL/"
 
 # Copy `qemu-armhf-static` into the root filesystem so that QEMU-based emulators
