@@ -23,6 +23,14 @@ base_user=pbl
 base_password=thebasecase
 root_password=therootcause
 
+if [[ ${micro_sd: -1} =~ [0-9] ]]; then
+    micro_sd_p1="${micro_sd}p1"
+    micro_sd_p2="${micro_sd}p2"
+else
+    micro_sd_p1="${micro_sd}1"
+    micro_sd_p2="${micro_sd}2"
+fi
+
 # Ensure the user running this script is root (required)
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be ran with sudo or as root."
@@ -63,12 +71,12 @@ partprobe "${micro_sd}"  # Ensure flashed partitions are visible
 
 # Resize rootfs partition so that it has enough space for PBL source code
 parted "${micro_sd}" resizepart 2 6GB
-e2fsck -f "${micro_sd}2"  # Check filesystem (required by resize2fs)
-resize2fs "${micro_sd}2"  # Resize rootfs filesystem to fill the expanded partition
+e2fsck -f "${micro_sd_p2}"  # Check filesystem (required by resize2fs)
+resize2fs "${micro_sd_p2}"  # Resize rootfs filesystem to fill the expanded partition
 
 # Mount bootfs and rootfs filesystems
-mkdir "${bootfs}" && mount "${micro_sd}1" "${bootfs}"
-mkdir "${rootfs}" && mount "${micro_sd}2" "${rootfs}"
+mkdir "${bootfs}" && mount "${micro_sd_p1}" "${bootfs}"
+mkdir "${rootfs}" && mount "${micro_sd_p2}" "${rootfs}"
 
 # Sanity-check that the boot files aren't empty
 #
