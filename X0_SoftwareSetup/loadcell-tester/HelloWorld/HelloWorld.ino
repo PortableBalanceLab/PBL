@@ -40,21 +40,77 @@
  http://www.arduino.cc/en/Tutorial/LiquidCrystal
  */
 
-// include the library code:
+#include <Arduino.h>
+#include <HX711.h>
 #include <LiquidCrystal.h>
 
-// initialize the library with the numbers of the interface pins
-LiquidCrystal lcd(2, 3 , 9, 10, 11, 12);
-long i = 0;
+constexpr int LOADCELL_DOUT_PIN = 16;
+constexpr int LOADCELL_SCK_PIN = 15;
+constexpr int SERIAL_BAUD = 9600;
 
-void setup() {
-  // set up the LCD's number of columns and rows:
-  lcd.begin(16, 2);
+namespace
+{
+  template<class T>
+  T exchange(T& obj, T new_value) { T old_value = obj; obj = new_value; return old_value; }
 }
 
-void loop() {
-  lcd.setCursor(0, 0);
-  lcd.print("Hello, World!");
-  lcd.setCursor(0, 1);
-  lcd.print(i++);
+int main(void) {
+  init();
+  // pinMode(LED_BUILTIN, OUTPUT);
+
+  // initialize the library with the numbers of the interface pins
+  LiquidCrystal lcd(2, 3, 7, 8, 9, 10);
+  lcd.begin(16, 2);
+
+  HX711 loadcell;
+  loadcell.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
+
+  unsigned long last_update = 0;
+  unsigned long measurements_since_last_update = 0;
+  unsigned long measurement_times_accumulator = 0;
+  long last_reading = 0;
+  bool waiting = true;
+  while (true) {
+    const unsigned long before = millis();
+
+    // Perform measurement
+    if (loadcell.wait_ready_retry(100, 10)) {
+      const long reading = loadcell.read();
+      const unsigned long after = millis();
+
+      measurements_since_last_update++;
+      measurement_times_accumulator += after - before;
+      last_reading = reading;
+      if (exchange(waiting, false)) {
+        lcd.clear();
+      }
+    }
+    else {
+      if (not exchange(waiting, true)) {
+        lcd.clear();
+      }
+    }
+
+    // Calculate+perform screen update
+    if (before > last_update + 100) {
+      if (waiting) {
+        lcd.setCursor(0, 0);
+        lcd.print("    Waiting");
+        lcd.setCursor(0, 1);
+        lcd.print("Insert load cell");
+      }
+      else {
+        lcd.setCursor(0, 0);
+        lcd.print("Value: ");
+        lcd.print(last_reading);
+        lcd.setCursor(0, 1);
+        lcd.print("Rate : ");
+        lcd.print(static_cast<double>(measurement_times_accumulator)/measurements_since_last_update);
+        lcd.print(" Hz");
+      }
+      last_update = before;
+      measurements_since_last_update = 0;
+      measurement_times_accumulator = 0;
+    }
+  }
 }
